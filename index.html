@@ -1,306 +1,415 @@
 <!doctype html>
 <html lang="th">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Promotion Portal</title>
-
-  <!-- Font -->
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Promotion Header • Create / Edit / Search</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
-    :root{
-      --bg:#0b0d12;
-      --card:#121622;
-      --muted:#9aa3b2;
-      --text:#e7ecf3;
-      --accent:#6aa1ff;
-      --accent-2:#22c55e;
-      --border:#2a3142;
-      --danger:#ef4444;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-      --radius-sm:12px;
-      --gap:14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{
-      margin:0; background: radial-gradient(1200px 800px at 10% -10%, #15203a 0%, transparent 60%),
-                  radial-gradient(1000px 700px at 120% 20%, #18243f 0%, transparent 60%),
-                  var(--bg);
-      color:var(--text); font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto;
-      -webkit-font-smoothing:antialiased; line-height:1.55;
-    }
-    .container{max-width:1100px; margin:48px auto; padding:0 20px;}
-    .header{
-      position:sticky; top:0; background:linear-gradient(to bottom, rgba(11,13,18,.85), rgba(11,13,18,0));
-      backdrop-filter: blur(6px); padding:18px 0 6px; margin:-18px 0 12px 0; z-index:5;
-    }
-    h1{margin:0 0 4px 0; font-size:34px; letter-spacing:.2px}
-    .subtitle{color:var(--muted); font-size:13px}
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
-      padding:22px; margin:18px 0;
-    }
-    .card h3{margin:0 0 14px 0; font-size:18px}
-    .grid{display:grid; gap:var(--gap)}
-    .grid-2{grid-template-columns:1fr 1fr}
-    @media (max-width:840px){ .grid-2{grid-template-columns:1fr} }
-
-    label{display:block; font-weight:600; margin:2px 0 6px 2px; font-size:13px}
-    .desc{color:var(--muted); font-size:12px; margin-left:6px}
-    input,select,textarea{
-      width:100%; appearance:none;
-      background: #0f1422; color:var(--text);
-      border:1px solid var(--border); border-radius:12px;
-      padding:12px 14px; outline:none; transition:.15s border, .15s box-shadow;
-    }
-    input::placeholder, textarea::placeholder{color:#7d8899}
-    input:focus, select:focus, textarea:focus{
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(106,161,255,.18);
-    }
-    textarea{min-height:92px; resize:vertical}
-
-    .actions{display:flex; gap:10px; align-items:center}
-    .btn{
-      border:0; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:600;
-      background:linear-gradient(180deg,#6aa1ff,#4f7ee6); color:white; box-shadow:0 6px 18px rgba(80,129,255,.35);
-      transition: transform .06s ease;
-    }
-    .btn:hover{transform: translateY(-1px)}
-    .btn:active{transform: translateY(0)}
+    :root{--bg:#0b0d12;--card:#121622;--muted:#9aa3b2;--text:#e7ecf3;--accent:#6aa1ff;--border:#2a3142;--radius:14px}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto}
+    .wrap{max-width:1100px;margin:32px auto;padding:0 18px}
+    h1{margin:0 0 6px} .muted{color:var(--muted);font-size:13px}
+    .grid{display:grid;gap:14px} .g2{grid-template-columns:1fr 1fr} @media(max-width:880px){.g2{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:16px 0}
+    label{display:block;font-weight:600;margin:2px 0 6px;font-size:13px}
+    input,select,textarea{width:100%;padding:10px 12px;background:#0f1422;border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(106,161,255,.18)}
+    textarea{min-height:90px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media(max-width:880px){.row{grid-template-columns:1fr}}
+    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+    .btn{border:0;background:#2a59ff;color:#fff;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
     .btn.secondary{background:#1b2436}
-    .muted{color:var(--muted); font-size:12px}
-
-    .toolbar{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-    .search{
-      flex:1; min-width:220px;
-      background:#0f1422; border:1px solid var(--border); border-radius:12px; padding:10px 14px;
-      display:flex; gap:8px; align-items:center;
-    }
-    .search input{border:0; background:transparent; padding:0}
-    .chip{display:inline-flex; gap:6px; align-items:center; font-size:12px; color:#cbd5e1;
-          background:#172033; padding:6px 10px; border:1px solid var(--border); border-radius:999px}
-
-    table{width:100%; border-collapse:separate; border-spacing:0; margin-top:14px}
-    thead th{
-      text-align:left; font-size:12px; letter-spacing:.3px; color:#cdd6e5;
-      background:#121a2b; position:sticky; top:0; z-index:3;
-    }
-    th,td{padding:12px 10px; border-bottom:1px solid #1e2637}
-    tbody tr:hover{background:#0f1422}
-    .tbl-actions button{
-      padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:#141c2c; color:#e6ecf9;
-    }
-    .status{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--border)}
-    .status.approved{background:#10241a; color:#b1f5c6; border-color:#1e3b2a}
-    .status.done{background:#1f2230; color:#c7cff9; border-color:#283056}
-    .toast{font-size:12px; color:#b7ffcf; background:#0f2a1c; border:1px solid #1f5b39; padding:8px 12px; border-radius:10px; display:none}
+    .btn.danger{background:#b91c1c}
+    .pill{font-size:12px;background:#16223a;border:1px solid var(--border);border-radius:999px;padding:6px 10px}
+    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .search{flex:1;min-width:240px;display:flex;gap:8px;align-items:center;background:#0f1422;border:1px solid var(--border);border-radius:10px;padding:8px 12px}
+    .search input{background:transparent;border:0;padding:0}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px}
+    th,td{padding:10px;border-bottom:1px solid #1e2637;text-align:left} thead th{font-size:12px;color:#cbd5e1}
+    .toast{font-size:12px;background:#0f2a1c;color:#b7ffcf;border:1px solid #1f5b39;padding:6px 10px;border-radius:10px;display:none}
     .toast.show{display:inline-block}
-    .spacer{height:6px}
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:20px;z-index:50}
+    .modal.show{display:flex}
+    .modal .box{max-width:700px;width:100%;background:#0f1422;border:1px solid var(--border);border-radius:14px;padding:16px}
+    .list{max-height:360px;overflow:auto;border:1px solid #1e2637;border-radius:10px;padding:8px}
+    .chips{display:flex;flex-wrap:wrap;gap:6px}
+    .chip{background:#172033;border:1px solid var(--border);border-radius:999px;padding:4px 8px;font-size:12px}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Promotion Portal</h1>
-      <div class="subtitle">GitHub Pages + Google Apps Script + Google Sheets</div>
-    </div>
+  <div class="wrap">
+    <h1>Promotion Header</h1>
+    <div class="muted">Create • Edit • Search (คำนวณ <b>Days</b> และ <b>Total</b> ฝั่งเว็บ)</div>
 
-    <!-- Create -->
+    <!-- CREATE / EDIT -->
     <div class="card">
-      <h3>เพิ่มโปรโมชัน</h3>
-      <form id="f" class="grid" autocomplete="off">
-        <div class="grid grid-2">
+      <div class="toolbar" style="justify-content:space-between">
+        <div class="pill" id="modePill">Mode: CREATE</div>
+        <div class="muted" id="msg"></div>
+      </div>
+      <form id="f" class="grid">
+        <div class="g2">
+          <div><label>Memo No.*</label><input name="memo_no" required/></div>
+          <div><label>Date of Issue*</label><input name="date_of_issue" type="date" required/></div>
+        </div>
+
+        <div class="g2">
+          <div><label>Calendar Name</label><input name="calendar_name"/></div>
+          <div><label>Event Name</label><input name="event_name"/></div>
+        </div>
+
+        <div class="g2">
+          <div><label>Promotion Code <span class="muted">(คั่นหลายโค้ดด้วย /)</span></label><input name="promotion_code"/></div>
+          <div><label>Payment Code</label><input name="payment_code"/></div>
+        </div>
+
+        <div class="g2">
+          <div><label>Start*</label><input name="start_date" type="date" required/></div>
+          <div><label>End*</label><input name="end_date" type="date" required/></div>
+        </div>
+
+        <div class="g2">
+          <div><label>Days (auto)</label><input name="days" readonly/></div>
+          <div><label>Campaign</label><input name="campaign"/></div>
+        </div>
+
+        <div class="g2">
+          <div><label>Target Group</label><input name="target_group"/></div>
           <div>
-            <label>Promo Code</label>
-            <input name="promo_code" placeholder="เช่น OCT25_EDM" required />
-          </div>
-          <div>
-            <label>Name</label>
-            <input name="name" placeholder="ชื่อแคมเปญ/รายละเอียดสั้น ๆ" required />
+            <label>Objective</label>
+            <select name="objective" id="selObjective"></select>
           </div>
         </div>
 
-        <div class="grid grid-2">
+        <div class="g2">
           <div>
-            <label>Start Date</label>
-            <input type="date" name="start_date" required />
+            <label>Category</label>
+            <div class="row">
+              <select name="category_mode" id="category_mode">
+                <option value="ALL">ALL</option>
+                <option value="INCLUDE_SOME">Include some</option>
+                <option value="EXCLUDE_SOME">Exclude some</option>
+              </select>
+              <button class="btn secondary" type="button" id="btnPickCat">Select Categories</button>
+            </div>
+            <div class="chips" id="chipsCat"></div>
+            <input type="hidden" name="category_list" id="category_list"/>
           </div>
+
           <div>
-            <label>End Date</label>
-            <input type="date" name="end_date" required />
+            <label>Brand</label>
+            <div class="row">
+              <select name="brand_mode" id="brand_mode">
+                <option value="ALL">ALL</option>
+                <option value="INCLUDE_SOME">Include some</option>
+                <option value="EXCLUDE_SOME">Exclude some</option>
+              </select>
+              <button class="btn secondary" type="button" id="btnPickBrand">Select Brands</button>
+            </div>
+            <div class="chips" id="chipsBrand"></div>
+            <input type="hidden" name="brand_list" id="brand_list"/>
           </div>
         </div>
 
-        <div class="grid grid-2">
+        <div class="g2">
           <div>
-            <label>Channel <span class="desc">EDM / SMS / In-Store / App</span></label>
-            <input name="channel" placeholder="EDM" />
+            <label>Mechanic Type</label>
+            <select name="mechanic_type" id="selMechanic"></select>
           </div>
+          <div><label>Location</label><input name="location"/></div>
+        </div>
+
+        <div><label>Background</label><textarea name="background"></textarea></div>
+        <div><label>Target (ข้อความ)</label><input name="target_text"/></div>
+
+        <div class="g2">
+          <div><label>In Budget</label><input name="in_budget" type="number" min="0" step="0.01"/></div>
           <div>
-            <label>Budget</label>
-            <input type="number" step="0.01" name="budget" placeholder="เช่น 50000" />
+            <label><input type="checkbox" id="chkExtra"/> Request Extra Budget</label>
+            <input name="extra_budget_amount" id="extra_budget_amount" type="number" min="0" step="0.01" placeholder="Extra amount" style="margin-top:6px;display:none"/>
           </div>
         </div>
 
-        <div class="grid grid-2">
-          <div>
-            <label>Discount (%)</label>
-            <input type="number" step="0.01" name="discount" placeholder="เช่น 10" />
-          </div>
-          <div>
-            <label>Owner</label>
-            <input name="owner" placeholder="ผู้รับผิดชอบ" />
-          </div>
+        <div class="g2">
+          <div><label>Total (auto)</label><input name="total" readonly/></div>
+          <div></div>
         </div>
 
-        <div>
-          <label>Status <span class="desc">Draft / Approved / Live / Done</span></label>
-          <input name="status" placeholder="Draft" />
-        </div>
-
-        <div>
-          <label>Notes</label>
-          <textarea name="notes" placeholder="เงื่อนไข / remark เพิ่มเติม"></textarea>
-        </div>
+        <div><label>Context</label><textarea name="context_long"></textarea></div>
 
         <div class="actions">
-          <button class="btn" type="submit">Save</button>
-          <span id="msg" class="toast">Saved ✓</span>
+          <button class="btn" type="submit" id="btnSave">Save</button>
+          <button class="btn secondary" type="button" id="btnClear">Clear Form</button>
+          <span class="toast" id="toast">Saved ✓</span>
         </div>
       </form>
     </div>
 
-    <!-- List -->
+    <!-- SEARCH -->
     <div class="card">
       <div class="toolbar">
-        <div class="search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35M17 10.5A6.5 6.5 0 1 1 4 10.5a6.5 6.5 0 0 1 13 0Z" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round"/></svg>
-          <input id="q" placeholder="ค้นหาชื่อ / โค้ด / เจ้าของ / สถานะ" />
-        </div>
-        <span class="chip" id="totalChip">0 รายการ</span>
+        <div class="search"><input id="q" placeholder="ค้นหา memo no / event / promotion code / calendar / objective / mechanic"/></div>
+        <button class="btn secondary" id="btnSearch">Search</button>
+        <span class="pill" id="countPill">0 results</span>
       </div>
-      <div class="spacer"></div>
-      <div id="list"></div>
+      <div id="searchList"></div>
     </div>
   </div>
 
-  <script>
-    // <<< เปลี่ยนเป็น URL Apps Script ของบูม >>>
-    const WEB_APP_URL = 'REPLACE_WITH_YOUR_APPS_SCRIPT_EXEC_URL';
+  <!-- MODAL: Category / Brand -->
+  <div class="modal" id="modalPick">
+    <div class="box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-weight:700" id="modalTitle">Select</div>
+        <button class="btn danger" type="button" id="btnCloseModal">Close</button>
+      </div>
+      <input id="modalFilter" placeholder="พิมพ์ค้นหา..." style="width:100%;margin:8px 0;padding:10px;background:#0b1220;border:1px solid #25304a;border-radius:10px;color:#e7ecf3"/>
+      <div class="list" id="modalList"></div>
+      <div class="actions" style="margin-top:10px">
+        <button class="btn" id="btnApplyPick" type="button">Apply</button>
+        <span class="muted" id="modalCount"></span>
+      </div>
+    </div>
+  </div>
 
-    const $ = (s)=>document.querySelector(s);
+<script>
+  // <<< ใส่ URL Apps Script ของบูม >>>
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwdLn_gOEt3JdHZwc_tBHryPDsx7qe-MPw_e2IUNowoSBjlno6FSWGph92avGxJHHj2Q/exec';
 
-    async function listPromos(){
-      $('#list').innerHTML = '<div class="muted">Loading…</div>';
-      try{
-        const res = await fetch(WEB_APP_URL+'?t='+(Date.now())); // กัน cache
-        const json = await res.json();
-        if(!json.ok) throw new Error(json.error || 'Unknown error');
-        window.__rows = json.data || [];
-        renderTable(window.__rows);
-      }catch(err){
-        $('#list').innerHTML = '<div class="muted">Error: '+err.message+'</div>';
-      }
-    }
+  const $ = s => document.querySelector(s);
+  const byName = n => document.querySelector(`[name="${n}"]`);
 
-    function renderTable(rows){
-      const q = ($('#q').value||'').toLowerCase().trim();
-      const filtered = rows.filter(r=>{
-        const s = `${r.promo_code||''} ${r.name||''} ${r.owner||''} ${r.status||''}`.toLowerCase();
-        return !q || s.includes(q);
-      });
-      $('#totalChip').textContent = `${filtered.length} รายการ`;
+  let LOOKUPS = { categories:[], brands:[], objectives:[], mechanics:[] };
+  let MODE = 'create'; // create | update
+  let PICK_STATE = { type:'category', items:[], selected:new Set() };
 
-      const html = [
-        '<div class="table-wrap"><table>',
-        '<thead><tr>',
-          '<th>#</th><th>Time</th><th>Code</th><th>Name</th><th>Start</th><th>End</th>',
-          '<th>Channel</th><th>Budget</th><th>Disc %</th><th>Owner</th><th>Notes</th><th>Status</th><th></th>',
-        '</tr></thead><tbody>',
-        filtered.map((r,i)=>{
-          const rowIndexOneBased = 2 + (window.__rows||[]).indexOf(r); // header=1, data start=2
-          const stClass = (r.status||'').toLowerCase()==='approved' ? 'approved'
-                        : (r.status||'').toLowerCase()==='done' ? 'done' : '';
-          return `<tr>
-            <td>${i+1}</td>
-            <td>${r.timestamp||''}</td>
-            <td><strong>${r.promo_code||''}</strong></td>
-            <td>${r.name||''}</td>
-            <td>${r.start_date||''}</td>
-            <td>${r.end_date||''}</td>
-            <td>${r.channel||''}</td>
-            <td>${r.budget||''}</td>
-            <td>${r.discount||''}</td>
-            <td>${r.owner||''}</td>
-            <td>${(r.notes||'').toString().slice(0,120)}</td>
-            <td><span class="status ${stClass}">${r.status||''}</span></td>
-            <td class="tbl-actions">
-              <button onclick="quickUpdateStatus(${rowIndexOneBased}, 'Approved')">Approve</button>
-              <button onclick="quickUpdateStatus(${rowIndexOneBased}, 'Done')">Done</button>
-            </td>
-          </tr>`;
-        }).join(''),
-        '</tbody></table></div>'
-      ].join('');
+  /** Utils **/
+  const fmt = n => (n==null || n==='') ? '' : Number(n).toLocaleString();
+  const joinList = arr => (arr||[]).join('|');
+  const splitList = s => (s||'').split('|').map(x=>x.trim()).filter(Boolean);
+  const toISO = s => s || '';
+  const daysBetween = (start,end)=>{
+    if(!start || !end) return '';
+    // ใช้ UTC เพื่อลดปัญหา timezone
+    const sd = new Date(start+'T00:00:00Z');
+    const ed = new Date(end+'T00:00:00Z');
+    if (isNaN(sd) || isNaN(ed)) return '';
+    const ms = ed.getTime() - sd.getTime();
+    return ms < 0 ? '' : Math.floor(ms/86400000)+1;
+  };
 
-      $('#list').innerHTML = html;
-    }
-
-    async function quickUpdateStatus(rowIndexOneBased, newStatus){
-      try{
-        const res = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          headers: {'Content-Type':'text/plain'}, // simple request
-          body: JSON.stringify({ action:'update', rowIndexOneBased, data: { status: newStatus } })
-        });
-        const json = await res.json();
-        if(!json.ok) throw new Error(json.error||'Update failed');
-        showToast('Updated ✓');
-        await listPromos();
-      }catch(err){
-        alert('Update error: '+err.message);
-      }
-    }
-
-    $('#f').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const fd = new FormData(e.target);
-      const data = Object.fromEntries(fd.entries());
-      showToast('Saving…', true);
-      try{
-        const res = await fetch(WEB_APP_URL, {
-          method: 'POST',
-          headers: {'Content-Type':'text/plain'}, // simple request
-          body: JSON.stringify({ action: 'add', data })
-        });
-        const json = await res.json();
-        if(!json.ok) throw new Error(json.error||'Save failed');
-        showToast('Saved ✓');
-        e.target.reset();
-        listPromos();
-      }catch(err){
-        showToast('Error: '+err.message);
-      }
+  async function apiGET(params) {
+    const url = WEB_APP_URL + '?' + new URLSearchParams(params).toString();
+    const res = await fetch(url);
+    return res.json();
+  }
+  async function apiPOST(payload) {
+    const res = await fetch(WEB_APP_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain'}, // simple request (no preflight)
+      body: JSON.stringify(payload)
     });
+    return res.json();
+  }
 
-    $('#q').addEventListener('input', ()=> renderTable(window.__rows||[]));
+  /** Lookups **/
+  async function loadLookups(){
+    const js = await apiGET({fn:'lookups'});
+    if(!js.ok) throw new Error(js.error||'lookup error');
+    LOOKUPS = js.data || LOOKUPS;
+    // Fill Objective & Mechanic
+    const optObj = ['<option value=""></option>'].concat((LOOKUPS.objectives||[]).map(x=>`<option>${x}</option>`)).join('');
+    $('#selObjective').innerHTML = optObj;
+    const optMech = ['<option value=""></option>'].concat((LOOKUPS.mechanics||[]).map(x=>`<option>${x}</option>`)).join('');
+    $('#selMechanic').innerHTML = optMech;
+    updatePickButtons();
+  }
 
-    function showToast(text, stay=false){
-      const el = $('#msg');
-      el.textContent = text;
-      el.classList.add('show');
-      if(!stay){
-        setTimeout(()=>el.classList.remove('show'), 1500);
-      }
+  /** Category/Brand pick modal **/
+  function openPick(type){
+    PICK_STATE.type = type; // 'category' | 'brand'
+    const source = type==='category' ? LOOKUPS.categories : LOOKUPS.brands;
+    PICK_STATE.items = source.slice();
+    // preload selection from input
+    const cur = splitList(byName(type+'_list').value);
+    PICK_STATE.selected = new Set(cur);
+    $('#modalTitle').textContent = 'Select ' + (type==='category' ? 'Categories' : 'Brands');
+    $('#modalFilter').value = '';
+    renderModalList();
+    $('#modalPick').classList.add('show');
+  }
+  function renderModalList(){
+    const q = $('#modalFilter').value.toLowerCase().trim();
+    const items = PICK_STATE.items.filter(x=>!q || x.toLowerCase().includes(q));
+    const html = items.map(name=>{
+      const checked = PICK_STATE.selected.has(name) ? 'checked' : '';
+      return `<label style="display:flex;gap:8px;align-items:center;padding:6px">
+        <input type="checkbox" ${checked} onchange="togglePick('${name.replace(/'/g,"\\'")}')"/>
+        <span>${name}</span>
+      </label>`;
+    }).join('');
+    $('#modalList').innerHTML = html || '<div class="muted">No items</div>';
+    $('#modalCount').textContent = `${PICK_STATE.selected.size} selected`;
+  }
+  window.togglePick = (name)=>{
+    if (PICK_STATE.selected.has(name)) PICK_STATE.selected.delete(name);
+    else PICK_STATE.selected.add(name);
+    $('#modalCount').textContent = `${PICK_STATE.selected.size} selected`;
+  };
+  function applyPick(){
+    const arr = Array.from(PICK_STATE.selected);
+    const listStr = joinList(arr);
+    const type = PICK_STATE.type;
+    byName(type+'_list').value = listStr;
+    // chips
+    const chips = arr.map(x=>`<span class="chip">${x}</span>`).join('');
+    if (type==='category') $('#chipsCat').innerHTML = chips; else $('#chipsBrand').innerHTML = chips;
+    closeModal();
+  }
+  function closeModal(){ $('#modalPick').classList.remove('show'); }
+  $('#btnCloseModal').onclick = closeModal;
+  $('#btnApplyPick').onclick = applyPick;
+  $('#modalFilter').addEventListener('input', renderModalList);
+
+  /** Form behaviors **/
+  function updatePickButtons(){
+    const catMode = byName('category_mode').value;
+    $('#btnPickCat').disabled = (catMode==='ALL');
+    if (catMode==='ALL'){ byName('category_list').value=''; $('#chipsCat').innerHTML=''; }
+
+    const brandMode = byName('brand_mode').value;
+    $('#btnPickBrand').disabled = (brandMode==='ALL');
+    if (brandMode==='ALL'){ byName('brand_list').value=''; $('#chipsBrand').innerHTML=''; }
+  }
+  $('#category_mode').addEventListener('change', updatePickButtons);
+  $('#brand_mode').addEventListener('change', updatePickButtons);
+  $('#btnPickCat').onclick = ()=> openPick('category');
+  $('#btnPickBrand').onclick = ()=> openPick('brand');
+
+  function recalcDays(){
+    const d = daysBetween(byName('start_date').value, byName('end_date').value);
+    byName('days').value = d;
+  }
+  byName('start_date').addEventListener('change', recalcDays);
+  byName('end_date').addEventListener('change', recalcDays);
+
+  function recalcTotal(){
+    const base = parseFloat(byName('in_budget').value||'0') || 0;
+    const extraOn = $('#chkExtra').checked;
+    const extra = extraOn ? (parseFloat($('#extra_budget_amount').value||'0')||0) : 0;
+    byName('total').value = (base + extra).toFixed(2);
+    $('#extra_budget_amount').style.display = extraOn ? 'block' : 'none';
+  }
+  $('#chkExtra').addEventListener('change', recalcTotal);
+  $('#extra_budget_amount').addEventListener('input', recalcTotal);
+  byName('in_budget').addEventListener('input', recalcTotal);
+
+  function showToast(t){
+    const el = $('#toast'); el.textContent = t; el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'),1500);
+  }
+  function setMode(m){ MODE = m; $('#modePill').textContent = 'Mode: ' + m.toUpperCase(); }
+
+  function clearForm(){
+    $('#f').reset();
+    $('#chipsCat').innerHTML = '';
+    $('#chipsBrand').innerHTML = '';
+    byName('category_list').value = '';
+    byName('brand_list').value = '';
+    $('#chkExtra').checked = false;
+    $('#extra_budget_amount').style.display = 'none';
+    setMode('create');
+  }
+  $('#btnClear').onclick = clearForm;
+
+  /** Save (create/update) **/
+  $('#f').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    // auto-calc ก่อนส่ง
+    recalcDays(); recalcTotal();
+
+    const fd = new FormData(e.target);
+    const data = Object.fromEntries(fd.entries());
+    data.extra_budget_checked = $('#chkExtra').checked;
+
+    // mode: create/update (ถ้ากำลังแก้จาก Search → จะเป็น update)
+    const payload = { action:'save', mode: MODE, data };
+    $('#msg').textContent = 'Saving...';
+    try{
+      const js = await apiPOST(payload);
+      if(!js.ok) throw new Error(js.error||'save failed');
+      showToast('Saved ✓');
+      $('#msg').textContent = 'Saved';
+      // หลังบันทึกให้เปลี่ยนเป็น update mode (แก้ต่อได้)
+      setMode('update');
+      // refresh search ถ้ากำลังดูผล
+      if ($('#q').value.trim()) doSearch();
+    }catch(err){
+      $('#msg').textContent = 'Error: ' + err.message;
+      alert(err.message);
     }
+  });
 
-    listPromos();
-  </script>
+  /** Search **/
+  async function doSearch(){
+    $('#searchList').innerHTML = '<div class="muted">Loading…</div>';
+    const js = await apiGET({fn:'search', q: $('#q').value.trim()});
+    if(!js.ok){ $('#searchList').innerHTML = '<div class="muted">Error</div>'; return; }
+    const rows = js.data || [];
+    $('#countPill').textContent = `${rows.length} results`;
+    const html = [
+      '<table><thead><tr>',
+      '<th>Memo No.</th><th>Event</th><th>Period</th><th>Calendar</th><th>Objective</th><th>Mechanic</th><th>Total</th><th></th>',
+      '</tr></thead><tbody>',
+      rows.map(r=>`<tr>
+        <td><b>${r.memo_no||''}</b></td>
+        <td>${r.event_name||''}</td>
+        <td>${r.period||''}</td>
+        <td>${r.calendar_name||''}</td>
+        <td>${r.objective||''}</td>
+        <td>${r.mechanic_type||''}</td>
+        <td>${r.total||''}</td>
+        <td><button class="btn secondary" onclick="openMemo('${(r.memo_no||'').replace(/'/g,"\\'")}')">Open</button></td>
+      </tr>`).join(''),
+      '</tbody></table>'
+    ].join('');
+    $('#searchList').innerHTML = html;
+  }
+  $('#btnSearch').onclick = doSearch;
+  $('#q').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); doSearch(); } });
+
+  /** Open for edit **/
+  window.openMemo = async (memoNo)=>{
+    const js = await apiGET({fn:'get', memo_no: memoNo});
+    if(!js.ok || !js.data){ alert('Not found'); return; }
+    const d = js.data;
+
+    // เติมค่าลงฟอร์ม
+    for (const k in d) { const el = byName(k); if (el) el.value = (d[k]==null?'':d[k]); }
+    // boolean
+    $('#chkExtra').checked = String(d.extra_budget_checked).toLowerCase()==='true';
+    $('#extra_budget_amount').style.display = $('#chkExtra').checked ? 'block' : 'none';
+
+    // chips
+    $('#chipsCat').innerHTML = splitList(d.category_list).map(x=>`<span class="chip">${x}</span>`).join('');
+    $('#chipsBrand').innerHTML = splitList(d.brand_list).map(x=>`<span class="chip">${x}</span>`).join('');
+
+    setMode('update');
+    window.scrollTo({top:0, behavior:'smooth'});
+  };
+
+  /** Init **/
+  (async function init(){
+    try{
+      await loadLookups();
+      clearForm(); // set defaults
+      updatePickButtons();
+    }catch(err){
+      alert('Lookup error: '+err.message);
+    }
+  })();
+</script>
 </body>
 </html>
