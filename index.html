@@ -71,7 +71,13 @@
     <section class="card">
       <div class="hd">Promotion Details</div>
       <div class="bd rows">
-        <div class="row"><div class="label">Memo No.*</div><div class="cell"><input id="memo_no" placeholder="Required"/></div></div>
+        <div class="row">
+          <div class="label">Memo No.*</div>
+          <div class="cell">
+            <input id="memo_no" placeholder="Required"/>
+            <span id="memoBadge" class="muted" style="flex:0 0 auto"></span>
+          </div>
+        </div>
         <div class="row"><div class="label">Calendar Name</div><div class="cell"><input id="calendar_name"/></div></div>
         <div class="row"><div class="label">Event Name</div><div class="cell"><input id="event_name"/></div></div>
 
@@ -263,8 +269,30 @@
   $('#chkExtra').addEventListener('change', recalcTotal);
   $('#extra_budget_amount').addEventListener('input', recalcTotal);
 
+  /* ========= Create/Update Mode ========= */
+  let MODE = 'create';
+  let CURRENT_RECORD = null;
+
+  async function checkMemo(memo){
+    const badge = $('#memoBadge');
+    badge.textContent = '';
+    if(!memo){ MODE='create'; CURRENT_RECORD=null; return; }
+    try{
+      const js = await apiGET({fn:'get', memo_no:memo});
+      if(js.ok && js.data){
+        badge.textContent = '• existing (update)'; badge.style.color = '#0e7490';
+        MODE = 'update'; CURRENT_RECORD = js.data;
+      }else{
+        badge.textContent = '• new (create)'; badge.style.color = '#64748b';
+        MODE = 'create'; CURRENT_RECORD = null;
+      }
+    }catch{/* ignore */}
+  }
+  let _memoTimer=null;
+  $('#memo_no').addEventListener('input',(e)=>{ clearTimeout(_memoTimer); _memoTimer=setTimeout(()=>checkMemo(e.target.value.trim()),250); });
+  $('#memo_no').addEventListener('blur',(e)=>checkMemo(e.target.value.trim()));
+
   /* ========= Save / Clear / Search ========= */
-  let MODE='create';
   function collect(){
     return {
       memo_no: $('#memo_no').value.trim(),
@@ -297,17 +325,37 @@
     };
   }
 
-  $('#btnSubmit').onclick=async ()=>{
-    $('#msgForm').textContent=''; const d=collect();
+  $('#btnSubmit').onclick = async ()=>{
+    $('#msgForm').textContent='';
+    const d=collect();
     if(!d.memo_no){ $('#msgForm').textContent='Memo No. is required'; return; }
     if(!d.date_of_issue||!d.start_date||!d.end_date){ $('#msgForm').textContent='Date of Issue / Start / End is required'; return; }
     if(new Date(d.end_date) < new Date(d.start_date)){ $('#msgForm').textContent='End date must be >= Start date'; return; }
-    $('#msg').textContent='Saving…';
+
+    $('#msg').textContent = (MODE==='update'?'Updating…':'Saving…');
     try{
-      const js=await apiPOST({action:'save',mode:MODE,data:d});
+      // ลองตามโหมดปัจจุบันก่อน
+      let js = await apiPOST({action:'save', mode:MODE, data:d});
       if(!js.ok) throw new Error(js.error||'save failed');
-      toast('Saved ✓'); $('#msg').textContent='Saved'; MODE='update'; doSearch();
-    }catch(err){ $('#msg').textContent='Error'; alert('Failed to fetch: '+err.message); }
+      toast(MODE==='update'?'Updated ✓':'Saved ✓');
+      $('#msg').textContent='Saved'; MODE='update'; doSearch();
+      return;
+    }catch(err){
+      if(String(err.message).includes('duplicate_memo_no')){
+        const ok = confirm('Memo นี้มีอยู่แล้ว ต้องการอัปเดตข้อมูลเดิมหรือไม่?');
+        if(!ok){ $('#msg').textContent='Duplicate memo'; return; }
+        try{
+          const js2 = await apiPOST({action:'save', mode:'update', data:d});
+          if(!js2.ok) throw new Error(js2.error||'update failed');
+          toast('Updated ✓'); $('#msg').textContent='Updated'; MODE='update'; doSearch();
+          return;
+        }catch(e2){
+          $('#msg').textContent='Error'; alert('Update failed: '+e2.message);
+          return;
+        }
+      }
+      $('#msg').textContent='Error'; alert('Failed to fetch: '+err.message);
+    }
   };
 
   $('#btnClear').onclick=()=>{
@@ -317,7 +365,7 @@
     $('#chipsCat').innerHTML='<span class="placeholder">No categories selected</span>'; $('#chipsCat').dataset.values='';
     $('#chipsBrand').innerHTML='<span class="placeholder">No brands selected</span>'; $('#chipsBrand').dataset.values='';
     $('#days').textContent='0'; $('#total').value=''; $('#extra_budget_amount').style.display='none';
-    $('#msgForm').textContent=''; MODE='create';
+    $('#msgForm').textContent=''; $('#memoBadge').textContent=''; MODE='create';
   };
 
   async function doSearch(){
@@ -347,6 +395,7 @@
   }
   $('#btnSearch').onclick=doSearch;
   $('#btnJumpSearch').onclick=()=>{ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); doSearch(); };
+  $('#q').addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); doSearch(); } });
 
   window.openMemo=async (memo)=>{
     try{
@@ -365,11 +414,12 @@
     }catch(err){ alert('Failed to fetch: '+err.message); }
   };
 
+  // init: ping + lookups + ดึงทั้งหมด
   (async function(){
     try{
-      // เช็ค endpoint เร็วๆ
       await apiGET({fn:'ping'});
       await loadLookups();
+      $('#q').value=''; doSearch();
     }catch(err){
       alert('Failed to fetch: '+err.message+'\n\nตรวจสิทธิ์ Web App = Anyone และใช้ URL /exec ล่าสุด');
     }
