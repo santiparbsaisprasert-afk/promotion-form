@@ -1,365 +1,442 @@
 <!doctype html>
-<html lang="th">
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Promotion Header • Create / Edit / Search</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0b0d12;--card:#121622;--muted:#9aa3b2;--text:#e7ecf3;--accent:#6aa1ff;--border:#2a3142;--radius:14px}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto}
-    .wrap{max-width:1100px;margin:32px auto;padding:0 18px}
-    h1{margin:0 0 6px} .muted{color:var(--muted);font-size:13px}
-    .grid{display:grid;gap:14px} .g2{grid-template-columns:1fr 1fr} @media(max-width:880px){.g2{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:16px 0}
-    label{display:block;font-weight:600;margin:2px 0 6px;font-size:13px}
-    input,select,textarea{width:100%;padding:10px 12px;background:#0f1422;border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none}
-    input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(106,161,255,.18)}
-    textarea{min-height:90px;resize:vertical}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px} @media(max-width:880px){.row{grid-template-columns:1fr}}
-    .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
-    .btn{border:0;background:#2a59ff;color:#fff;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
-    .btn.secondary{background:#1b2436}
-    .btn.danger{background:#b91c1c}
-    .pill{font-size:12px;background:#16223a;border:1px solid var(--border);border-radius:999px;padding:6px 10px}
-    .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .search{flex:1;min-width:240px;display:flex;gap:8px;align-items:center;background:#0f1422;border:1px solid var(--border);border-radius:10px;padding:8px 12px}
-    .search input{background:transparent;border:0;padding:0}
-    table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px}
-    th,td{padding:10px;border-bottom:1px solid #1e2637;text-align:left} thead th{font-size:12px;color:#cbd5e1}
-    .toast{font-size:12px;background:#0f2a1c;color:#b7ffcf;border:1px solid #1f5b39;padding:6px 10px;border-radius:10px;display:none}
-    .toast.show{display:inline-block}
-    /* Modal */
-    .modal{position:fixed;inset:0;display:none;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:20px;z-index:50}
-    .modal.show{display:flex}
-    .modal .box{max-width:700px;width:100%;background:#0f1422;border:1px solid var(--border);border-radius:14px;padding:16px}
-    .list{max-height:360px;overflow:auto;border:1px solid #1e2637;border-radius:10px;padding:8px}
-    .chips{display:flex;flex-wrap:wrap;gap:6px}
-    .chip{background:#172033;border:1px solid var(--border);border-radius:999px;padding:4px 8px;font-size:12px}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Promotion Header</title>
+<style>
+  :root{
+    --bg:#f6f7fb;
+    --panel:#ffffff;
+    --label-bg:#e9eef7;
+    --label-text:#2b3b56;
+    --head-bg:#0b67c2;
+    --head-text:#fff;
+    --border:#cfd7e6;
+    --muted:#6b778b;
+    --accent:#0b67c2;
+    --radius:8px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);font-family:Segoe UI,Roboto,system-ui,Arial;color:#1d2430}
+
+  /* layout */
+  .container{max-width:1200px;margin:24px auto;padding:0 16px}
+  .topbar{
+    display:grid;grid-template-columns:1fr 1fr 1fr auto;
+    gap:12px;align-items:end;margin-bottom:12px;
+  }
+  .topbar .field label{display:block;margin-bottom:4px;color:#2b3b56;font-weight:600}
+  .topbar input{width:100%}
+  .actions-v{
+    display:flex;flex-direction:column;gap:10px;justify-self:end;
+  }
+
+  .grid-main{
+    display:grid;grid-template-columns:2fr 1fr;gap:16px;
+  }
+  @media (max-width:980px){ .grid-main{grid-template-columns:1fr} .actions-v{flex-direction:row} }
+
+  /* panel */
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px; overflow:hidden}
+  .panel .head{background:var(--head-bg);color:var(--head-text);padding:8px 12px;font-weight:700}
+  .panel .body{padding:12px}
+
+  /* form rows  (label cell + input cell) */
+  .rows{display:grid;gap:8px}
+  .row{
+    display:grid;grid-template-columns:220px 1fr;gap:10px;align-items:center;
+  }
+  @media (max-width:680px){ .row{grid-template-columns:150px 1fr} }
+
+  .label{
+    background:var(--label-bg);color:var(--label-text);
+    border:1px solid var(--border);border-radius:6px;
+    padding:8px 10px;font-weight:600;
+  }
+  .cell{display:flex;gap:8px;align-items:center}
+  input[type="text"], input[type="date"], input[type="number"], select, textarea{
+    width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;
+    outline:none;
+  }
+  textarea{min-height:90px;resize:vertical}
+  input:focus,select:focus,textarea:focus{border-color:#96b6e8;box-shadow:0 0 0 3px rgba(11,103,194,.15)}
+
+  .inline{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center}
+  .inline small{color:var(--muted)}
+
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{background:#eef4ff;border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px}
+
+  /* buttons */
+  .btn{border:1px solid var(--border);background:#fff;color:#1d2430;padding:9px 12px;border-radius:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn.ghost{background:#f3f6fb}
+  .btn.danger{background:#fef2f2;border-color:#f4caca;color:#9f1239}
+
+  /* search table */
+  table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  th,td{padding:10px;border-bottom:1px solid #edf1f7;text-align:left}
+  thead th{background:#f3f6fb;color:#36455f;font-weight:700}
+  tr:last-child td{border-bottom:0}
+
+  /* right panel textarea (mechanic details) */
+  .mechanic-box{height:340px}
+  .muted{color:var(--muted);font-size:12px}
+  .toast{display:none;font-size:12px;background:#e7f7ea;color:#116736;border:1px solid #b3e2c1;border-radius:6px;padding:6px 10px}
+  .toast.show{display:inline-block}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Promotion Header</h1>
-    <div class="muted">Create • Edit • Search (คำนวณ <b>Days</b> และ <b>Total</b> ฝั่งเว็บ)</div>
-
-    <!-- CREATE / EDIT -->
-    <div class="card">
-      <div class="toolbar" style="justify-content:space-between">
-        <div class="pill" id="modePill">Mode: CREATE</div>
-        <div class="muted" id="msg"></div>
+  <div class="container">
+    <!-- Header bar -->
+    <div class="topbar">
+      <div class="field">
+        <label>Memo No.*</label>
+        <input type="text" id="memo_no_top" placeholder="Required"/>
       </div>
-      <form id="f" class="grid">
-        <div class="g2">
-          <div><label>Memo No.*</label><input name="memo_no" required/></div>
-          <div><label>Date of Issue*</label><input name="date_of_issue" type="date" required/></div>
-        </div>
-
-        <div class="g2">
-          <div><label>Calendar Name</label><input name="calendar_name"/></div>
-          <div><label>Event Name</label><input name="event_name"/></div>
-        </div>
-
-        <div class="g2">
-          <div><label>Promotion Code <span class="muted">(คั่นหลายโค้ดด้วย /)</span></label><input name="promotion_code"/></div>
-          <div><label>Payment Code</label><input name="payment_code"/></div>
-        </div>
-
-        <div class="g2">
-          <div><label>Start*</label><input name="start_date" type="date" required/></div>
-          <div><label>End*</label><input name="end_date" type="date" required/></div>
-        </div>
-
-        <div class="g2">
-          <div><label>Days (auto)</label><input name="days" readonly/></div>
-          <div><label>Campaign</label><input name="campaign"/></div>
-        </div>
-
-        <div class="g2">
-          <div><label>Target Group</label><input name="target_group"/></div>
-          <div>
-            <label>Objective</label>
-            <select name="objective" id="selObjective"></select>
-          </div>
-        </div>
-
-        <div class="g2">
-          <div>
-            <label>Category</label>
-            <div class="row">
-              <select name="category_mode" id="category_mode">
-                <option value="ALL">ALL</option>
-                <option value="INCLUDE_SOME">Include some</option>
-                <option value="EXCLUDE_SOME">Exclude some</option>
-              </select>
-              <button class="btn secondary" type="button" id="btnPickCat">Select Categories</button>
-            </div>
-            <div class="chips" id="chipsCat"></div>
-            <input type="hidden" name="category_list" id="category_list"/>
-          </div>
-
-          <div>
-            <label>Brand</label>
-            <div class="row">
-              <select name="brand_mode" id="brand_mode">
-                <option value="ALL">ALL</option>
-                <option value="INCLUDE_SOME">Include some</option>
-                <option value="EXCLUDE_SOME">Exclude some</option>
-              </select>
-              <button class="btn secondary" type="button" id="btnPickBrand">Select Brands</button>
-            </div>
-            <div class="chips" id="chipsBrand"></div>
-            <input type="hidden" name="brand_list" id="brand_list"/>
-          </div>
-        </div>
-
-        <div class="g2">
-          <div>
-            <label>Mechanic Type</label>
-            <select name="mechanic_type" id="selMechanic"></select>
-          </div>
-          <div><label>Location</label><input name="location"/></div>
-        </div>
-
-        <div><label>Background</label><textarea name="background"></textarea></div>
-        <div><label>Target (ข้อความ)</label><input name="target_text"/></div>
-
-        <div class="g2">
-          <div><label>In Budget</label><input name="in_budget" type="number" min="0" step="0.01"/></div>
-          <div>
-            <label><input type="checkbox" id="chkExtra"/> Request Extra Budget</label>
-            <input name="extra_budget_amount" id="extra_budget_amount" type="number" min="0" step="0.01" placeholder="Extra amount" style="margin-top:6px;display:none"/>
-          </div>
-        </div>
-
-        <div class="g2">
-          <div><label>Total (auto)</label><input name="total" readonly/></div>
-          <div></div>
-        </div>
-
-        <div><label>Context</label><textarea name="context_long"></textarea></div>
-
-        <div class="actions">
-          <button class="btn" type="submit" id="btnSave">Save</button>
-          <button class="btn secondary" type="button" id="btnClear">Clear Form</button>
-          <span class="toast" id="toast">Saved ✓</span>
-        </div>
-      </form>
+      <div class="field">
+        <label>Calendar Name</label>
+        <input type="text" id="calendar_name_top"/>
+      </div>
+      <div class="field">
+        <label>Event Name</label>
+        <input type="text" id="event_name_top"/>
+      </div>
+      <div class="actions-v">
+        <button class="btn">Close</button>
+        <button class="btn ghost" id="btnClear">Clear Form</button>
+        <button class="btn primary" id="btnSubmit">Submit</button>
+        <button class="btn" id="btnSearch">Search</button>
+      </div>
     </div>
 
-    <!-- SEARCH -->
-    <div class="card">
-      <div class="toolbar">
-        <div class="search"><input id="q" placeholder="ค้นหา memo no / event / promotion code / calendar / objective / mechanic"/></div>
-        <button class="btn secondary" id="btnSearch">Search</button>
-        <span class="pill" id="countPill">0 results</span>
+    <div class="grid-main">
+      <!-- Left: Promotion Details -->
+      <div class="panel">
+        <div class="head">Promotion Details</div>
+        <div class="body rows" id="leftForm">
+          <div class="row">
+            <div class="label">Promotion Code</div>
+            <div class="cell"><input type="text" id="promotion_code" placeholder="Enter your code here"/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Payment Code</div>
+            <div class="cell"><input type="text" id="payment_code"/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Date of Issue</div>
+            <div class="cell inline">
+              <input type="date" id="date_of_issue"/>
+              <small></small>
+              <label class="muted" style="justify-self:end">Contact Name</label>
+              <input type="text" id="contact_name" placeholder=""/>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">Promotion Period</div>
+            <div class="cell inline">
+              <input type="date" id="start_date"/>
+              <small>to</small>
+              <input type="date" id="end_date"/>
+              <small>- <span id="days">0</span> Days</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">Campaign</div>
+            <div class="cell"><input type="text" id="campaign"/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Target Group</div>
+            <div class="cell"><input type="text" id="target_group"/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Category</div>
+            <div class="cell" style="flex-direction:column;align-items:stretch;gap:8px">
+              <div class="inline" style="grid-template-columns: 180px auto auto auto;">
+                <select id="category_mode">
+                  <option value="ALL">All Category</option>
+                  <option value="INCLUDE_SOME">Some Categories join</option>
+                  <option value="EXCLUDE_SOME">Some Categories NOT join</option>
+                </select>
+                <div></div>
+                <button class="btn" id="pickCat">Select Categories</button>
+              </div>
+              <div class="chips" id="chipsCat"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">Brand</div>
+            <div class="cell" style="flex-direction:column;align-items:stretch;gap:8px">
+              <div class="inline" style="grid-template-columns: 180px auto auto auto;">
+                <select id="brand_mode">
+                  <option value="ALL">All Brand</option>
+                  <option value="INCLUDE_SOME">Some Brands join</option>
+                  <option value="EXCLUDE_SOME">Some Brands NOT join</option>
+                </select>
+                <div></div>
+                <button class="btn" id="pickBrand">Select Brands</button>
+              </div>
+              <div class="chips" id="chipsBrand"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">Background</div>
+            <div class="cell"><textarea id="background"></textarea></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Location</div>
+            <div class="cell"><input type="text" id="location"/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Objectives</div>
+            <div class="cell"><select id="objective"></select></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Target</div>
+            <div class="cell"><input type="text" id="target_text"/></div>
+          </div>
+        </div>
       </div>
-      <div id="searchList"></div>
+
+      <!-- Right: Mechanic -->
+      <div class="panel">
+        <div class="head">Mechanic</div>
+        <div class="body rows">
+          <div class="row">
+            <div class="label">Mechanic</div>
+            <div class="cell inline" style="grid-template-columns: 1fr;">
+              <select id="mechanic_type"></select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">Details</div>
+            <div class="cell"><textarea id="context_long" class="mechanic-box" placeholder=""></textarea></div>
+          </div>
+
+          <div class="row">
+            <div class="label">In Budget</div>
+            <div class="cell"><input type="number" id="in_budget" min="0" step="0.01" placeholder="0.00"/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Request Extra Budget</div>
+            <div class="cell">
+              <input type="checkbox" id="chkExtra" style="width:auto"/>
+              <input type="number" id="extra_budget_amount" min="0" step="0.01" placeholder="0.00" style="max-width:200px;display:none"/>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="label">Total</div>
+            <div class="cell"><input type="text" id="total" readonly/></div>
+          </div>
+
+          <div class="row">
+            <div class="label">Status</div>
+            <div class="cell"><span class="toast" id="toast">Saved ✓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search result -->
+    <div class="panel" style="margin-top:16px">
+      <div class="head">Search</div>
+      <div class="body">
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+          <input type="text" id="q" placeholder="memo / event / promotion code / objective / mechanic" style="flex:1"/>
+          <button class="btn" id="doSearch">Search</button>
+          <span class="muted" id="countPill">0 results</span>
+        </div>
+        <div id="searchList"></div>
+      </div>
     </div>
   </div>
 
-  <!-- MODAL: Category / Brand -->
-  <div class="modal" id="modalPick">
-    <div class="box">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-weight:700" id="modalTitle">Select</div>
-        <button class="btn danger" type="button" id="btnCloseModal">Close</button>
+  <!-- Modal simple list -->
+  <div id="modal" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:20px">
+    <div style="max-width:640px;width:100%;background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong id="modalTitle">Select</strong>
+        <button class="btn danger" id="closeModal">Close</button>
       </div>
-      <input id="modalFilter" placeholder="พิมพ์ค้นหา..." style="width:100%;margin:8px 0;padding:10px;background:#0b1220;border:1px solid #25304a;border-radius:10px;color:#e7ecf3"/>
-      <div class="list" id="modalList"></div>
-      <div class="actions" style="margin-top:10px">
-        <button class="btn" id="btnApplyPick" type="button">Apply</button>
-        <span class="muted" id="modalCount"></span>
+      <input id="modalFilter" placeholder="type to filter..." style="margin:10px 0;width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px"/>
+      <div id="modalList" style="max-height:360px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:8px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+        <button class="btn primary" id="applyPick">Apply</button>
+        <small class="muted" id="modalCount"></small>
       </div>
     </div>
   </div>
 
 <script>
-  // <<< ใส่ URL Apps Script ของบูม >>>
+  /* ====== CONFIG ====== */
   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwdLn_gOEt3JdHZwc_tBHryPDsx7qe-MPw_e2IUNowoSBjlno6FSWGph92avGxJHHj2Q/exec';
 
-  const $ = s => document.querySelector(s);
-  const byName = n => document.querySelector(`[name="${n}"]`);
+  /* ====== UTIL ====== */
+  const $ = sel => document.querySelector(sel);
+  const join = a => (a||[]).join('|'); const split = s => (s||'').split('|').map(x=>x.trim()).filter(Boolean);
+  const daysBetween = (s,e)=>{ if(!s||!e) return 0; const sd=new Date(s+'T00:00:00Z'); const ed=new Date(e+'T00:00:00Z'); const d=Math.floor((ed-sd)/86400000)+1; return d>0?d:0; };
+  async function apiGET(params){ const u = WEB_APP_URL + '?' + new URLSearchParams(params).toString(); const r = await fetch(u); return r.json(); }
+  async function apiPOST(body){ const r = await fetch(WEB_APP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)}); return r.json(); }
+  function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1500); }
 
-  let LOOKUPS = { categories:[], brands:[], objectives:[], mechanics:[] };
-  let MODE = 'create'; // create | update
-  let PICK_STATE = { type:'category', items:[], selected:new Set() };
-
-  /** Utils **/
-  const fmt = n => (n==null || n==='') ? '' : Number(n).toLocaleString();
-  const joinList = arr => (arr||[]).join('|');
-  const splitList = s => (s||'').split('|').map(x=>x.trim()).filter(Boolean);
-  const toISO = s => s || '';
-  const daysBetween = (start,end)=>{
-    if(!start || !end) return '';
-    // ใช้ UTC เพื่อลดปัญหา timezone
-    const sd = new Date(start+'T00:00:00Z');
-    const ed = new Date(end+'T00:00:00Z');
-    if (isNaN(sd) || isNaN(ed)) return '';
-    const ms = ed.getTime() - sd.getTime();
-    return ms < 0 ? '' : Math.floor(ms/86400000)+1;
-  };
-
-  async function apiGET(params) {
-    const url = WEB_APP_URL + '?' + new URLSearchParams(params).toString();
-    const res = await fetch(url);
-    return res.json();
-  }
-  async function apiPOST(payload) {
-    const res = await fetch(WEB_APP_URL, {
-      method:'POST',
-      headers:{'Content-Type':'text/plain'}, // simple request (no preflight)
-      body: JSON.stringify(payload)
-    });
-    return res.json();
-  }
-
-  /** Lookups **/
+  /* ====== LOOKUPS ====== */
+  let LOOKUPS = {categories:[],brands:[],objectives:[],mechanics:[]};
   async function loadLookups(){
     const js = await apiGET({fn:'lookups'});
     if(!js.ok) throw new Error(js.error||'lookup error');
-    LOOKUPS = js.data || LOOKUPS;
-    // Fill Objective & Mechanic
-    const optObj = ['<option value=""></option>'].concat((LOOKUPS.objectives||[]).map(x=>`<option>${x}</option>`)).join('');
-    $('#selObjective').innerHTML = optObj;
-    const optMech = ['<option value=""></option>'].concat((LOOKUPS.mechanics||[]).map(x=>`<option>${x}</option>`)).join('');
-    $('#selMechanic').innerHTML = optMech;
-    updatePickButtons();
+    LOOKUPS = js.data;
+
+    // fill objective & mechanic
+    $('#objective').innerHTML = '<option value=""></option>'+LOOKUPS.objectives.map(x=>`<option>${x}</option>`).join('');
+    $('#mechanic_type').innerHTML = '<option value=""></option>'+LOOKUPS.mechanics.map(x=>`<option>${x}</option>`).join('');
+    updateModeButtons();
   }
 
-  /** Category/Brand pick modal **/
-  function openPick(type){
-    PICK_STATE.type = type; // 'category' | 'brand'
-    const source = type==='category' ? LOOKUPS.categories : LOOKUPS.brands;
-    PICK_STATE.items = source.slice();
-    // preload selection from input
-    const cur = splitList(byName(type+'_list').value);
-    PICK_STATE.selected = new Set(cur);
+  /* ====== CATEGORY/BRAND PICKER ====== */
+  let PICK = {type:'category', set:new Set(), source:[]};
+  function openList(type){
+    PICK.type = type;
+    PICK.source = (type==='category'? LOOKUPS.categories : LOOKUPS.brands).slice();
+    const cur = type==='category' ? split($('#chipsCat').dataset.values||'') : split($('#chipsBrand').dataset.values||'');
+    PICK.set = new Set(cur);
     $('#modalTitle').textContent = 'Select ' + (type==='category' ? 'Categories' : 'Brands');
     $('#modalFilter').value = '';
-    renderModalList();
-    $('#modalPick').classList.add('show');
+    renderPickList();
+    $('#modal').style.display='flex';
   }
-  function renderModalList(){
+  function renderPickList(){
     const q = $('#modalFilter').value.toLowerCase().trim();
-    const items = PICK_STATE.items.filter(x=>!q || x.toLowerCase().includes(q));
-    const html = items.map(name=>{
-      const checked = PICK_STATE.selected.has(name) ? 'checked' : '';
+    const items = PICK.source.filter(x=>!q || x.toLowerCase().includes(q));
+    $('#modalList').innerHTML = items.map(n=>{
+      const checked = PICK.set.has(n) ? 'checked' : '';
       return `<label style="display:flex;gap:8px;align-items:center;padding:6px">
-        <input type="checkbox" ${checked} onchange="togglePick('${name.replace(/'/g,"\\'")}')"/>
-        <span>${name}</span>
+        <input type="checkbox" ${checked} onchange="togglePick('${n.replace(/'/g,"\\'")}')" />
+        <span>${n}</span>
       </label>`;
-    }).join('');
-    $('#modalList').innerHTML = html || '<div class="muted">No items</div>';
-    $('#modalCount').textContent = `${PICK_STATE.selected.size} selected`;
+    }).join('') || '<div class="muted">No items</div>';
+    $('#modalCount').textContent = `${PICK.set.size} selected`;
   }
-  window.togglePick = (name)=>{
-    if (PICK_STATE.selected.has(name)) PICK_STATE.selected.delete(name);
-    else PICK_STATE.selected.add(name);
-    $('#modalCount').textContent = `${PICK_STATE.selected.size} selected`;
+  window.togglePick = (name)=>{ if(PICK.set.has(name)) PICK.set.delete(name); else PICK.set.add(name); $('#modalCount').textContent = `${PICK.set.size} selected`; };
+  $('#applyPick').onclick = ()=>{
+    const list = Array.from(PICK.set);
+    const html = list.map(x=>`<span class="chip">${x}</span>`).join('');
+    if (PICK.type==='category'){ $('#chipsCat').innerHTML = html; $('#chipsCat').dataset.values = join(list); }
+    else { $('#chipsBrand').innerHTML = html; $('#chipsBrand').dataset.values = join(list); }
+    $('#modal').style.display='none';
   };
-  function applyPick(){
-    const arr = Array.from(PICK_STATE.selected);
-    const listStr = joinList(arr);
-    const type = PICK_STATE.type;
-    byName(type+'_list').value = listStr;
-    // chips
-    const chips = arr.map(x=>`<span class="chip">${x}</span>`).join('');
-    if (type==='category') $('#chipsCat').innerHTML = chips; else $('#chipsBrand').innerHTML = chips;
-    closeModal();
-  }
-  function closeModal(){ $('#modalPick').classList.remove('show'); }
-  $('#btnCloseModal').onclick = closeModal;
-  $('#btnApplyPick').onclick = applyPick;
-  $('#modalFilter').addEventListener('input', renderModalList);
+  $('#closeModal').onclick = ()=> $('#modal').style.display='none';
+  $('#modalFilter').addEventListener('input', renderPickList);
 
-  /** Form behaviors **/
-  function updatePickButtons(){
-    const catMode = byName('category_mode').value;
-    $('#btnPickCat').disabled = (catMode==='ALL');
-    if (catMode==='ALL'){ byName('category_list').value=''; $('#chipsCat').innerHTML=''; }
+  // enable/disable pick buttons
+  function updateModeButtons(){
+    const catMode = $('#category_mode').value;
+    $('#pickCat').disabled = catMode==='ALL';
+    if (catMode==='ALL'){ $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values=''; }
 
-    const brandMode = byName('brand_mode').value;
-    $('#btnPickBrand').disabled = (brandMode==='ALL');
-    if (brandMode==='ALL'){ byName('brand_list').value=''; $('#chipsBrand').innerHTML=''; }
+    const brandMode = $('#brand_mode').value;
+    $('#pickBrand').disabled = brandMode==='ALL';
+    if (brandMode==='ALL'){ $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values=''; }
   }
-  $('#category_mode').addEventListener('change', updatePickButtons);
-  $('#brand_mode').addEventListener('change', updatePickButtons);
-  $('#btnPickCat').onclick = ()=> openPick('category');
-  $('#btnPickBrand').onclick = ()=> openPick('brand');
+  $('#category_mode').addEventListener('change', updateModeButtons);
+  $('#brand_mode').addEventListener('change', updateModeButtons);
+  $('#pickCat').onclick = ()=> openList('category');
+  $('#pickBrand').onclick = ()=> openList('brand');
 
-  function recalcDays(){
-    const d = daysBetween(byName('start_date').value, byName('end_date').value);
-    byName('days').value = d;
-  }
-  byName('start_date').addEventListener('change', recalcDays);
-  byName('end_date').addEventListener('change', recalcDays);
-
-  function recalcTotal(){
-    const base = parseFloat(byName('in_budget').value||'0') || 0;
-    const extraOn = $('#chkExtra').checked;
-    const extra = extraOn ? (parseFloat($('#extra_budget_amount').value||'0')||0) : 0;
-    byName('total').value = (base + extra).toFixed(2);
-    $('#extra_budget_amount').style.display = extraOn ? 'block' : 'none';
-  }
+  /* ====== CALC ====== */
+  function recalcDays(){ const d = daysBetween($('#start_date').value,$('#end_date').value); $('#days').textContent = d; }
+  function recalcTotal(){ const base=parseFloat($('#in_budget').value||'0')||0; const exOn=$('#chkExtra').checked; $('#extra_budget_amount').style.display=exOn?'inline-block':'none'; const extra= exOn ? (parseFloat($('#extra_budget_amount').value||'0')||0) : 0; $('#total').value = (base+extra).toFixed(2); }
+  $('#start_date').addEventListener('change', recalcDays);
+  $('#end_date').addEventListener('change', recalcDays);
+  $('#in_budget').addEventListener('input', recalcTotal);
   $('#chkExtra').addEventListener('change', recalcTotal);
   $('#extra_budget_amount').addEventListener('input', recalcTotal);
-  byName('in_budget').addEventListener('input', recalcTotal);
 
-  function showToast(t){
-    const el = $('#toast'); el.textContent = t; el.classList.add('show');
-    setTimeout(()=>el.classList.remove('show'),1500);
+  /* ====== SAVE ====== */
+  function collectData(){
+    return {
+      memo_no: $('#memo_no_top').value.trim(),
+      calendar_name: $('#calendar_name_top').value.trim(),
+      event_name: $('#event_name_top').value.trim(),
+      promotion_code: $('#promotion_code').value.trim(),
+      payment_code: $('#payment_code').value.trim(),
+      date_of_issue: $('#date_of_issue').value,
+      start_date: $('#start_date').value,
+      end_date: $('#end_date').value,
+      days: Number($('#days').textContent||'0') || '',
+      campaign: $('#campaign').value.trim(),
+      target_group: $('#target_group').value.trim(),
+      category_mode: $('#category_mode').value,
+      category_list: $('#chipsCat').dataset.values || '',
+      brand_mode: $('#brand_mode').value,
+      brand_list: $('#chipsBrand').dataset.values || '',
+      background: $('#background').value,
+      location: $('#location').value.trim(),
+      objective: $('#objective').value,
+      target_text: $('#target_text').value.trim(),
+      mechanic_type: $('#mechanic_type').value,
+      in_budget: $('#in_budget').value,
+      extra_budget_checked: $('#chkExtra').checked,
+      extra_budget_amount: $('#extra_budget_amount').value,
+      total: $('#total').value,
+      context_long: $('#context_long').value,
+      created_by: 'web', updated_by: 'web'
+    };
   }
-  function setMode(m){ MODE = m; $('#modePill').textContent = 'Mode: ' + m.toUpperCase(); }
 
-  function clearForm(){
-    $('#f').reset();
-    $('#chipsCat').innerHTML = '';
-    $('#chipsBrand').innerHTML = '';
-    byName('category_list').value = '';
-    byName('brand_list').value = '';
-    $('#chkExtra').checked = false;
-    $('#extra_budget_amount').style.display = 'none';
-    setMode('create');
-  }
-  $('#btnClear').onclick = clearForm;
+  let MODE = 'create'; // or 'update'
+  function setMode(m){ MODE=m; }
 
-  /** Save (create/update) **/
-  $('#f').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    // auto-calc ก่อนส่ง
-    recalcDays(); recalcTotal();
+  $('#btnSubmit').onclick = async ()=>{
+    const d = collectData();
+    if(!d.memo_no){ alert('Memo No. is required'); return; }
+    if(!d.date_of_issue||!d.start_date||!d.end_date){ alert('Date of Issue / Start / End is required'); return; }
+    if(new Date(d.end_date) < new Date(d.start_date)){ alert('End date must be >= Start date'); return; }
 
-    const fd = new FormData(e.target);
-    const data = Object.fromEntries(fd.entries());
-    data.extra_budget_checked = $('#chkExtra').checked;
-
-    // mode: create/update (ถ้ากำลังแก้จาก Search → จะเป็น update)
-    const payload = { action:'save', mode: MODE, data };
-    $('#msg').textContent = 'Saving...';
     try{
-      const js = await apiPOST(payload);
+      const js = await apiPOST({action:'save', mode: MODE, data: d});
       if(!js.ok) throw new Error(js.error||'save failed');
-      showToast('Saved ✓');
-      $('#msg').textContent = 'Saved';
-      // หลังบันทึกให้เปลี่ยนเป็น update mode (แก้ต่อได้)
-      setMode('update');
-      // refresh search ถ้ากำลังดูผล
-      if ($('#q').value.trim()) doSearch();
-    }catch(err){
-      $('#msg').textContent = 'Error: ' + err.message;
-      alert(err.message);
-    }
-  });
+      toast('Saved ✓'); setMode('update');
+      doSearch(); // refresh table if user just searched
+    }catch(err){ alert(err.message); }
+  };
 
-  /** Search **/
+  /* ====== CLEAR ====== */
+  $('#btnClear').onclick = ()=>{
+    document.querySelectorAll('input,textarea,select').forEach(el=>{
+      if(el.type==='checkbox') el.checked=false;
+      else el.value='';
+    });
+    $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values='';
+    $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values='';
+    $('#days').textContent='0'; $('#extra_budget_amount').style.display='none'; $('#total').value='';
+    setMode('create');
+  };
+
+  /* ====== SEARCH ====== */
   async function doSearch(){
     $('#searchList').innerHTML = '<div class="muted">Loading…</div>';
     const js = await apiGET({fn:'search', q: $('#q').value.trim()});
     if(!js.ok){ $('#searchList').innerHTML = '<div class="muted">Error</div>'; return; }
-    const rows = js.data || [];
-    $('#countPill').textContent = `${rows.length} results`;
-    const html = [
+    const rows = js.data||[];
+    $('#countPill').textContent = rows.length + ' results';
+    $('#searchList').innerHTML = [
       '<table><thead><tr>',
       '<th>Memo No.</th><th>Event</th><th>Period</th><th>Calendar</th><th>Objective</th><th>Mechanic</th><th>Total</th><th></th>',
       '</tr></thead><tbody>',
@@ -371,44 +448,54 @@
         <td>${r.objective||''}</td>
         <td>${r.mechanic_type||''}</td>
         <td>${r.total||''}</td>
-        <td><button class="btn secondary" onclick="openMemo('${(r.memo_no||'').replace(/'/g,"\\'")}')">Open</button></td>
+        <td><button class="btn ghost" onclick="openMemo('${(r.memo_no||'').replace(/'/g,"\\'")}')">Open</button></td>
       </tr>`).join(''),
       '</tbody></table>'
     ].join('');
-    $('#searchList').innerHTML = html;
   }
-  $('#btnSearch').onclick = doSearch;
-  $('#q').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); doSearch(); } });
+  $('#doSearch').onclick = doSearch;
+  $('#btnSearch').onclick = ()=>{ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); doSearch(); };
 
-  /** Open for edit **/
-  window.openMemo = async (memoNo)=>{
-    const js = await apiGET({fn:'get', memo_no: memoNo});
+  window.openMemo = async (memo)=>{
+    const js = await apiGET({fn:'get', memo_no:memo});
     if(!js.ok || !js.data){ alert('Not found'); return; }
     const d = js.data;
-
-    // เติมค่าลงฟอร์ม
-    for (const k in d) { const el = byName(k); if (el) el.value = (d[k]==null?'':d[k]); }
-    // boolean
+    // fill
+    $('#memo_no_top').value = d.memo_no||'';
+    $('#calendar_name_top').value = d.calendar_name||'';
+    $('#event_name_top').value = d.event_name||'';
+    $('#promotion_code').value = d.promotion_code||'';
+    $('#payment_code').value = d.payment_code||'';
+    $('#date_of_issue').value = d.date_of_issue||'';
+    $('#start_date').value = d.start_date||'';
+    $('#end_date').value = d.end_date||'';
+    $('#days').textContent = d.days||'0';
+    $('#campaign').value = d.campaign||'';
+    $('#target_group').value = d.target_group||'';
+    $('#category_mode').value = d.category_mode||'ALL';
+    $('#brand_mode').value = d.brand_mode||'ALL';
+    $('#background').value = d.background||'';
+    $('#location').value = d.location||'';
+    $('#objective').value = d.objective||'';
+    $('#target_text').value = d.target_text||'';
+    $('#mechanic_type').value = d.mechanic_type||'';
+    $('#in_budget').value = d.in_budget||'';
     $('#chkExtra').checked = String(d.extra_budget_checked).toLowerCase()==='true';
-    $('#extra_budget_amount').style.display = $('#chkExtra').checked ? 'block' : 'none';
+    $('#extra_budget_amount').value = d.extra_budget_amount||'';
+    $('#total').value = d.total||'';
+    $('#context_long').value = d.context_long||'';
 
     // chips
-    $('#chipsCat').innerHTML = splitList(d.category_list).map(x=>`<span class="chip">${x}</span>`).join('');
-    $('#chipsBrand').innerHTML = splitList(d.brand_list).map(x=>`<span class="chip">${x}</span>`).join('');
+    const cat = split(d.category_list); $('#chipsCat').dataset.values = join(cat); $('#chipsCat').innerHTML = cat.map(x=>`<span class="chip">${x}</span>`).join('');
+    const br = split(d.brand_list); $('#chipsBrand').dataset.values = join(br); $('#chipsBrand').innerHTML = br.map(x=>`<span class="chip">${x}</span>`).join('');
 
-    setMode('update');
-    window.scrollTo({top:0, behavior:'smooth'});
+    updateModeButtons(); recalcTotal(); setMode('update');
+    window.scrollTo({top:0,behavior:'smooth'});
   };
 
-  /** Init **/
-  (async function init(){
-    try{
-      await loadLookups();
-      clearForm(); // set defaults
-      updatePickButtons();
-    }catch(err){
-      alert('Lookup error: '+err.message);
-    }
+  /* init */
+  (async function(){
+    try{ await loadLookups(); }catch(e){ alert(e.message); }
   })();
 </script>
 </body>
