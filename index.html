@@ -6,261 +6,166 @@
 <title>Promotion Header</title>
 <style>
   :root{
-    --bg:#f6f7fb;
-    --panel:#ffffff;
-    --label-bg:#e9eef7;
-    --label-text:#2b3b56;
-    --head-bg:#0b67c2;
-    --head-text:#fff;
-    --border:#cfd7e6;
-    --muted:#6b778b;
-    --accent:#0b67c2;
-    --radius:8px;
+    --bg:#f5f7fb; --panel:#fff; --head:#0b67c2; --head-text:#fff;
+    --label-bg:#e9eef7; --label:#2b3b56; --border:#cfd7e6; --muted:#6b778b;
+    --radius:10px; --accent:#0b67c2;
   }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:var(--bg);font-family:Segoe UI,Roboto,system-ui,Arial;color:#1d2430}
-
-  /* layout */
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:#1d2430;font-family:Segoe UI,Roboto,system-ui,Arial}
   .container{max-width:1200px;margin:24px auto;padding:0 16px}
-  .topbar{
-    display:grid;grid-template-columns:1fr 1fr 1fr auto;
-    gap:12px;align-items:end;margin-bottom:12px;
-  }
-  .topbar .field label{display:block;margin-bottom:4px;color:#2b3b56;font-weight:600}
+
+  /* Top bar */
+  .topbar{display:grid;grid-template-columns:1fr 1fr 1fr 140px;gap:12px;align-items:end;margin-bottom:12px}
+  .topbar .field label{display:block;font-weight:600;margin:0 0 6px;color:#2b3b56}
   .topbar input{width:100%}
-  .actions-v{
-    display:flex;flex-direction:column;gap:10px;justify-self:end;
-  }
+  .actions-v{display:flex;flex-direction:column;gap:10px;align-self:start}
+  .actions-v .btn{width:100%}
 
-  .grid-main{
-    display:grid;grid-template-columns:2fr 1fr;gap:16px;
-  }
-  @media (max-width:980px){ .grid-main{grid-template-columns:1fr} .actions-v{flex-direction:row} }
+  /* Main 2 columns — ขวากว้างขึ้น */
+  .main{display:grid;grid-template-columns:3fr 2fr;gap:16px}
+  @media (max-width:1000px){ .main{grid-template-columns:1fr} .actions-v{flex-direction:row} }
 
-  /* panel */
-  .panel{background:var(--panel);border:1px solid var(--border);border-radius:10px; overflow:hidden}
-  .panel .head{background:var(--head-bg);color:var(--head-text);padding:8px 12px;font-weight:700}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  .panel .head{background:var(--head);color:var(--head-text);padding:10px 12px;font-weight:700}
   .panel .body{padding:12px}
 
-  /* form rows  (label cell + input cell) */
+  /* Two-column rows (label cell + input cell) */
   .rows{display:grid;gap:8px}
-  .row{
-    display:grid;grid-template-columns:220px 1fr;gap:10px;align-items:center;
-  }
-  @media (max-width:680px){ .row{grid-template-columns:150px 1fr} }
-
-  .label{
-    background:var(--label-bg);color:var(--label-text);
-    border:1px solid var(--border);border-radius:6px;
-    padding:8px 10px;font-weight:600;
-  }
+  .row{display:grid;grid-template-columns:220px 1fr;gap:10px;align-items:center}
+  @media (max-width:720px){ .row{grid-template-columns:160px 1fr} }
+  .label{background:var(--label-bg);color:var(--label);border:1px solid var(--border);border-radius:8px;padding:9px 10px;font-weight:600}
   .cell{display:flex;gap:8px;align-items:center}
+
   input[type="text"], input[type="date"], input[type="number"], select, textarea{
-    width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;
-    outline:none;
+    width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:#fff;outline:none
   }
-  textarea{min-height:90px;resize:vertical}
-  input:focus,select:focus,textarea:focus{border-color:#96b6e8;box-shadow:0 0 0 3px rgba(11,103,194,.15)}
+  textarea{min-height:92px;resize:vertical}
+  input:focus, select:focus, textarea:focus{border-color:#96b6e8;box-shadow:0 0 0 3px rgba(11,103,194,.15)}
 
   .inline{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center}
   .inline small{color:var(--muted)}
 
-  /* chips */
   .chips{display:flex;flex-wrap:wrap;gap:6px}
   .chip{background:#eef4ff;border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px}
 
-  /* buttons */
-  .btn{border:1px solid var(--border);background:#fff;color:#1d2430;padding:9px 12px;border-radius:8px;cursor:pointer}
-  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn{border:1px solid var(--border);background:#fff;color:#1d2430;padding:10px 12px;border-radius:8px;cursor:pointer}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
   .btn.ghost{background:#f3f6fb}
   .btn.danger{background:#fef2f2;border-color:#f4caca;color:#9f1239}
 
-  /* search table */
-  table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+  /* Search table */
+  table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
   th,td{padding:10px;border-bottom:1px solid #edf1f7;text-align:left}
   thead th{background:#f3f6fb;color:#36455f;font-weight:700}
   tr:last-child td{border-bottom:0}
-
-  /* right panel textarea (mechanic details) */
-  .mechanic-box{height:340px}
   .muted{color:var(--muted);font-size:12px}
-  .toast{display:none;font-size:12px;background:#e7f7ea;color:#116736;border:1px solid #b3e2c1;border-radius:6px;padding:6px 10px}
+  .toast{display:none;font-size:12px;background:#e7f7ea;color:#116736;border:1px solid #b3e2c1;border-radius:8px;padding:6px 10px}
   .toast.show{display:inline-block}
+
+  /* Right panel tuning */
+  .mechanic-box{height:380px}
+  .right .body .row .cell input,
+  .right .body .row .cell select,
+  .right .body .row .cell textarea{padding:10px 12px}
 </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header bar -->
+    <!-- Header -->
     <div class="topbar">
-      <div class="field">
-        <label>Memo No.*</label>
-        <input type="text" id="memo_no_top" placeholder="Required"/>
-      </div>
-      <div class="field">
-        <label>Calendar Name</label>
-        <input type="text" id="calendar_name_top"/>
-      </div>
-      <div class="field">
-        <label>Event Name</label>
-        <input type="text" id="event_name_top"/>
-      </div>
+      <div class="field"><label>Memo No.*</label><input id="memo_no_top" placeholder="Required"/></div>
+      <div class="field"><label>Calendar Name</label><input id="calendar_name_top"/></div>
+      <div class="field"><label>Event Name</label><input id="event_name_top"/></div>
       <div class="actions-v">
         <button class="btn">Close</button>
         <button class="btn ghost" id="btnClear">Clear Form</button>
         <button class="btn primary" id="btnSubmit">Submit</button>
-        <button class="btn" id="btnSearch">Search</button>
+        <button class="btn ghost" id="btnJumpSearch">Search</button>
       </div>
     </div>
 
-    <div class="grid-main">
-      <!-- Left: Promotion Details -->
+    <div class="main">
+      <!-- Left -->
       <div class="panel">
         <div class="head">Promotion Details</div>
-        <div class="body rows" id="leftForm">
-          <div class="row">
-            <div class="label">Promotion Code</div>
-            <div class="cell"><input type="text" id="promotion_code" placeholder="Enter your code here"/></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Payment Code</div>
-            <div class="cell"><input type="text" id="payment_code"/></div>
-          </div>
+        <div class="body rows">
+          <div class="row"><div class="label">Promotion Code</div><div class="cell"><input id="promotion_code" placeholder="Enter your code here"/></div></div>
+          <div class="row"><div class="label">Payment Code</div><div class="cell"><input id="payment_code"/></div></div>
 
           <div class="row">
             <div class="label">Date of Issue</div>
             <div class="cell inline">
-              <input type="date" id="date_of_issue"/>
-              <small></small>
+              <input type="date" id="date_of_issue"/><small></small>
               <label class="muted" style="justify-self:end">Contact Name</label>
-              <input type="text" id="contact_name" placeholder=""/>
+              <input id="contact_name"/>
             </div>
           </div>
 
           <div class="row">
             <div class="label">Promotion Period</div>
             <div class="cell inline">
-              <input type="date" id="start_date"/>
-              <small>to</small>
-              <input type="date" id="end_date"/>
-              <small>- <span id="days">0</span> Days</small>
+              <input type="date" id="start_date"/><small>to</small><input type="date" id="end_date"/><small>- <span id="days">0</span> Days</small>
             </div>
           </div>
 
-          <div class="row">
-            <div class="label">Campaign</div>
-            <div class="cell"><input type="text" id="campaign"/></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Target Group</div>
-            <div class="cell"><input type="text" id="target_group"/></div>
-          </div>
+          <div class="row"><div class="label">Campaign</div><div class="cell"><input id="campaign"/></div></div>
+          <div class="row"><div class="label">Target Group</div><div class="cell"><input id="target_group"/></div></div>
 
           <div class="row">
             <div class="label">Category</div>
-            <div class="cell" style="flex-direction:column;align-items:stretch;gap:8px">
-              <div class="inline" style="grid-template-columns: 180px auto auto auto;">
+            <div class="cell" style="flex-direction:column;gap:8px;align-items:stretch">
+              <div class="inline" style="grid-template-columns: 190px auto auto auto;">
                 <select id="category_mode">
                   <option value="ALL">All Category</option>
                   <option value="INCLUDE_SOME">Some Categories join</option>
                   <option value="EXCLUDE_SOME">Some Categories NOT join</option>
-                </select>
-                <div></div>
-                <button class="btn" id="pickCat">Select Categories</button>
+                </select><div></div><button class="btn" id="pickCat">Select Categories</button>
               </div>
-              <div class="chips" id="chipsCat"></div>
+              <div class="chips" id="chipsCat" data-values=""></div>
             </div>
           </div>
 
           <div class="row">
             <div class="label">Brand</div>
-            <div class="cell" style="flex-direction:column;align-items:stretch;gap:8px">
-              <div class="inline" style="grid-template-columns: 180px auto auto auto;">
+            <div class="cell" style="flex-direction:column;gap:8px;align-items:stretch">
+              <div class="inline" style="grid-template-columns: 190px auto auto auto;">
                 <select id="brand_mode">
                   <option value="ALL">All Brand</option>
                   <option value="INCLUDE_SOME">Some Brands join</option>
                   <option value="EXCLUDE_SOME">Some Brands NOT join</option>
-                </select>
-                <div></div>
-                <button class="btn" id="pickBrand">Select Brands</button>
+                </select><div></div><button class="btn" id="pickBrand">Select Brands</button>
               </div>
-              <div class="chips" id="chipsBrand"></div>
+              <div class="chips" id="chipsBrand" data-values=""></div>
             </div>
           </div>
 
-          <div class="row">
-            <div class="label">Background</div>
-            <div class="cell"><textarea id="background"></textarea></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Location</div>
-            <div class="cell"><input type="text" id="location"/></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Objectives</div>
-            <div class="cell"><select id="objective"></select></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Target</div>
-            <div class="cell"><input type="text" id="target_text"/></div>
-          </div>
+          <div class="row"><div class="label">Background</div><div class="cell"><textarea id="background"></textarea></div></div>
+          <div class="row"><div class="label">Location</div><div class="cell"><input id="location"/></div></div>
+          <div class="row"><div class="label">Objectives</div><div class="cell"><select id="objective"></select></div></div>
+          <div class="row"><div class="label">Target</div><div class="cell"><input id="target_text"/></div></div>
         </div>
       </div>
 
-      <!-- Right: Mechanic -->
-      <div class="panel">
+      <!-- Right -->
+      <div class="panel right">
         <div class="head">Mechanic</div>
         <div class="body rows">
-          <div class="row">
-            <div class="label">Mechanic</div>
-            <div class="cell inline" style="grid-template-columns: 1fr;">
-              <select id="mechanic_type"></select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="label">Details</div>
-            <div class="cell"><textarea id="context_long" class="mechanic-box" placeholder=""></textarea></div>
-          </div>
-
-          <div class="row">
-            <div class="label">In Budget</div>
-            <div class="cell"><input type="number" id="in_budget" min="0" step="0.01" placeholder="0.00"/></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Request Extra Budget</div>
-            <div class="cell">
-              <input type="checkbox" id="chkExtra" style="width:auto"/>
-              <input type="number" id="extra_budget_amount" min="0" step="0.01" placeholder="0.00" style="max-width:200px;display:none"/>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="label">Total</div>
-            <div class="cell"><input type="text" id="total" readonly/></div>
-          </div>
-
-          <div class="row">
-            <div class="label">Status</div>
-            <div class="cell"><span class="toast" id="toast">Saved ✓</span></div>
-          </div>
+          <div class="row"><div class="label">Mechanic</div><div class="cell"><select id="mechanic_type"></select></div></div>
+          <div class="row"><div class="label">Details</div><div class="cell"><textarea id="context_long" class="mechanic-box"></textarea></div></div>
+          <div class="row"><div class="label">In Budget</div><div class="cell"><input type="number" id="in_budget" min="0" step="0.01" placeholder="0.00"/></div></div>
+          <div class="row"><div class="label">Request Extra Budget</div><div class="cell"><input type="checkbox" id="chkExtra" style="width:auto"/><input type="number" id="extra_budget_amount" min="0" step="0.01" placeholder="0.00" style="max-width:200px;display:none"/></div></div>
+          <div class="row"><div class="label">Total</div><div class="cell"><input id="total" readonly/></div></div>
+          <div class="row"><div class="label">Status</div><div class="cell"><span class="toast" id="toast">Saved ✓</span></div></div>
         </div>
       </div>
     </div>
 
-    <!-- Search result -->
+    <!-- Search -->
     <div class="panel" style="margin-top:16px">
       <div class="head">Search</div>
       <div class="body">
         <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
-          <input type="text" id="q" placeholder="memo / event / promotion code / objective / mechanic" style="flex:1"/>
-          <button class="btn" id="doSearch">Search</button>
+          <input id="q" placeholder="memo / event / promotion code / objective / mechanic" style="flex:1"/>
+          <button class="btn" id="btnSearch">Search</button>
           <span class="muted" id="countPill">0 results</span>
         </div>
         <div id="searchList"></div>
@@ -268,15 +173,15 @@
     </div>
   </div>
 
-  <!-- Modal simple list -->
+  <!-- Modal -->
   <div id="modal" style="position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:20px">
-    <div style="max-width:640px;width:100%;background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px">
+    <div style="max-width:640px;width:100%;background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <strong id="modalTitle">Select</strong>
         <button class="btn danger" id="closeModal">Close</button>
       </div>
-      <input id="modalFilter" placeholder="type to filter..." style="margin:10px 0;width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:6px"/>
-      <div id="modalList" style="max-height:360px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:8px"></div>
+      <input id="modalFilter" placeholder="type to filter..." style="margin:10px 0;width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px"/>
+      <div id="modalList" style="max-height:360px;overflow:auto;border:1px solid var(--border);border-radius:10px;padding:8px"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
         <button class="btn primary" id="applyPick">Apply</button>
         <small class="muted" id="modalCount"></small>
@@ -285,91 +190,80 @@
   </div>
 
 <script>
-  /* ====== CONFIG ====== */
-  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxwdLn_gOEt3JdHZwc_tBHryPDsx7qe-MPw_e2IUNowoSBjlno6FSWGph92avGxJHHj2Q/exec';
+  /* ========= CONFIG ========= */
+  const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzodTKajuEeNkui75dL9x8zeUb15IF0F66ONFpbRJN0Ie4UqO_ly9iA-92tue_VWe_TtQ/exec';
 
-  /* ====== UTIL ====== */
-  const $ = sel => document.querySelector(sel);
+  /* ========= UTILS ========= */
+  const $ = s => document.querySelector(s);
   const join = a => (a||[]).join('|'); const split = s => (s||'').split('|').map(x=>x.trim()).filter(Boolean);
-  const daysBetween = (s,e)=>{ if(!s||!e) return 0; const sd=new Date(s+'T00:00:00Z'); const ed=new Date(e+'T00:00:00Z'); const d=Math.floor((ed-sd)/86400000)+1; return d>0?d:0; };
-  async function apiGET(params){ const u = WEB_APP_URL + '?' + new URLSearchParams(params).toString(); const r = await fetch(u); return r.json(); }
-  async function apiPOST(body){ const r = await fetch(WEB_APP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)}); return r.json(); }
-  function toast(t){ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1500); }
+  const daysBetween=(s,e)=>{ if(!s||!e) return 0; const sd=new Date(s+'T00:00:00Z'); const ed=new Date(e+'T00:00:00Z'); const d=Math.floor((ed-sd)/86400000)+1; return d>0?d:0; };
+  async function apiGET(p){ const u=WEB_APP_URL+'?'+new URLSearchParams(p).toString(); const r=await fetch(u); return r.json(); }
+  async function apiPOST(body){ const r=await fetch(WEB_APP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)}); return r.json(); }
+  const toast=t=>{ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1500); };
 
-  /* ====== LOOKUPS ====== */
-  let LOOKUPS = {categories:[],brands:[],objectives:[],mechanics:[]};
+  /* ========= LOOKUPS ========= */
+  let LOOKUPS={categories:[],brands:[],objectives:[],mechanics:[]};
   async function loadLookups(){
-    const js = await apiGET({fn:'lookups'});
-    if(!js.ok) throw new Error(js.error||'lookup error');
-    LOOKUPS = js.data;
-
-    // fill objective & mechanic
-    $('#objective').innerHTML = '<option value=""></option>'+LOOKUPS.objectives.map(x=>`<option>${x}</option>`).join('');
-    $('#mechanic_type').innerHTML = '<option value=""></option>'+LOOKUPS.mechanics.map(x=>`<option>${x}</option>`).join('');
+    const js=await apiGET({fn:'lookups'}); if(!js.ok) throw new Error(js.error||'lookup error');
+    LOOKUPS=js.data;
+    $('#objective').innerHTML='<option value=""></option>'+LOOKUPS.objectives.map(x=>`<option>${x}</option>`).join('');
+    $('#mechanic_type').innerHTML='<option value=""></option>'+LOOKUPS.mechanics.map(x=>`<option>${x}</option>`).join('');
     updateModeButtons();
   }
 
-  /* ====== CATEGORY/BRAND PICKER ====== */
-  let PICK = {type:'category', set:new Set(), source:[]};
-  function openList(type){
-    PICK.type = type;
-    PICK.source = (type==='category'? LOOKUPS.categories : LOOKUPS.brands).slice();
-    const cur = type==='category' ? split($('#chipsCat').dataset.values||'') : split($('#chipsBrand').dataset.values||'');
-    PICK.set = new Set(cur);
-    $('#modalTitle').textContent = 'Select ' + (type==='category' ? 'Categories' : 'Brands');
-    $('#modalFilter').value = '';
-    renderPickList();
-    $('#modal').style.display='flex';
+  /* ========= PICKER ========= */
+  let PICK={type:'category', set:new Set(), source:[]};
+  function openPick(type){
+    PICK.type=type;
+    PICK.source=(type==='category'?LOOKUPS.categories:LOOKUPS.brands).slice();
+    const cur=split((type==='category'?$('#chipsCat'):$('#chipsBrand')).dataset.values||''); PICK.set=new Set(cur);
+    $('#modalTitle').textContent='Select '+(type==='category'?'Categories':'Brands');
+    $('#modalFilter').value=''; renderPick(); $('#modal').style.display='flex';
   }
-  function renderPickList(){
-    const q = $('#modalFilter').value.toLowerCase().trim();
-    const items = PICK.source.filter(x=>!q || x.toLowerCase().includes(q));
-    $('#modalList').innerHTML = items.map(n=>{
-      const checked = PICK.set.has(n) ? 'checked' : '';
+  function renderPick(){
+    const q=$('#modalFilter').value.toLowerCase().trim();
+    const items=PICK.source.filter(x=>!q||x.toLowerCase().includes(q));
+    $('#modalList').innerHTML=items.map(n=>{
+      const chk=PICK.set.has(n)?'checked': '';
       return `<label style="display:flex;gap:8px;align-items:center;padding:6px">
-        <input type="checkbox" ${checked} onchange="togglePick('${n.replace(/'/g,"\\'")}')" />
-        <span>${n}</span>
-      </label>`;
+        <input type="checkbox" ${chk} onchange="togglePick('${n.replace(/'/g,"\\'")}')"/><span>${n}</span></label>`;
     }).join('') || '<div class="muted">No items</div>';
-    $('#modalCount').textContent = `${PICK.set.size} selected`;
+    $('#modalCount').textContent=`${PICK.set.size} selected`;
   }
-  window.togglePick = (name)=>{ if(PICK.set.has(name)) PICK.set.delete(name); else PICK.set.add(name); $('#modalCount').textContent = `${PICK.set.size} selected`; };
-  $('#applyPick').onclick = ()=>{
-    const list = Array.from(PICK.set);
-    const html = list.map(x=>`<span class="chip">${x}</span>`).join('');
-    if (PICK.type==='category'){ $('#chipsCat').innerHTML = html; $('#chipsCat').dataset.values = join(list); }
-    else { $('#chipsBrand').innerHTML = html; $('#chipsBrand').dataset.values = join(list); }
+  window.togglePick=(n)=>{ if(PICK.set.has(n)) PICK.set.delete(n); else PICK.set.add(n); $('#modalCount').textContent=`${PICK.set.size} selected`; };
+  $('#applyPick').onclick=()=>{
+    const list=Array.from(PICK.set); const html=list.map(x=>`<span class="chip">${x}</span>`).join('');
+    if (PICK.type==='category'){ $('#chipsCat').dataset.values=join(list); $('#chipsCat').innerHTML=html; }
+    else { $('#chipsBrand').dataset.values=join(list); $('#chipsBrand').innerHTML=html; }
     $('#modal').style.display='none';
   };
-  $('#closeModal').onclick = ()=> $('#modal').style.display='none';
-  $('#modalFilter').addEventListener('input', renderPickList);
+  $('#closeModal').onclick=()=>$('#modal').style.display='none';
+  $('#modalFilter').addEventListener('input', renderPick);
+  $('#pickCat').onclick=()=>openPick('category'); $('#pickBrand').onclick=()=>openPick('brand');
 
-  // enable/disable pick buttons
   function updateModeButtons(){
-    const catMode = $('#category_mode').value;
-    $('#pickCat').disabled = catMode==='ALL';
-    if (catMode==='ALL'){ $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values=''; }
-
-    const brandMode = $('#brand_mode').value;
-    $('#pickBrand').disabled = brandMode==='ALL';
-    if (brandMode==='ALL'){ $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values=''; }
+    const cm=$('#category_mode').value; $('#pickCat').disabled=(cm==='ALL'); if(cm==='ALL'){ $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values=''; }
+    const bm=$('#brand_mode').value; $('#pickBrand').disabled=(bm==='ALL'); if(bm==='ALL'){ $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values=''; }
   }
   $('#category_mode').addEventListener('change', updateModeButtons);
   $('#brand_mode').addEventListener('change', updateModeButtons);
-  $('#pickCat').onclick = ()=> openList('category');
-  $('#pickBrand').onclick = ()=> openList('brand');
 
-  /* ====== CALC ====== */
-  function recalcDays(){ const d = daysBetween($('#start_date').value,$('#end_date').value); $('#days').textContent = d; }
-  function recalcTotal(){ const base=parseFloat($('#in_budget').value||'0')||0; const exOn=$('#chkExtra').checked; $('#extra_budget_amount').style.display=exOn?'inline-block':'none'; const extra= exOn ? (parseFloat($('#extra_budget_amount').value||'0')||0) : 0; $('#total').value = (base+extra).toFixed(2); }
+  /* ========= CALC ========= */
+  function recalcDays(){ $('#days').textContent = daysBetween($('#start_date').value,$('#end_date').value); }
+  function recalcTotal(){
+    const base=parseFloat($('#in_budget').value||'0')||0;
+    const exOn=$('#chkExtra').checked; $('#extra_budget_amount').style.display=exOn?'inline-block':'none';
+    const extra=exOn ? (parseFloat($('#extra_budget_amount').value||'0')||0) : 0;
+    $('#total').value=(base+extra).toFixed(2);
+  }
   $('#start_date').addEventListener('change', recalcDays);
   $('#end_date').addEventListener('change', recalcDays);
   $('#in_budget').addEventListener('input', recalcTotal);
   $('#chkExtra').addEventListener('change', recalcTotal);
   $('#extra_budget_amount').addEventListener('input', recalcTotal);
 
-  /* ====== SAVE ====== */
-  function collectData(){
+  /* ========= COLLECT / SAVE ========= */
+  function collect(){
     return {
       memo_no: $('#memo_no_top').value.trim(),
       calendar_name: $('#calendar_name_top').value.trim(),
@@ -379,13 +273,13 @@
       date_of_issue: $('#date_of_issue').value,
       start_date: $('#start_date').value,
       end_date: $('#end_date').value,
-      days: Number($('#days').textContent||'0') || '',
+      days: Number($('#days').textContent||'0')||'',
       campaign: $('#campaign').value.trim(),
       target_group: $('#target_group').value.trim(),
       category_mode: $('#category_mode').value,
-      category_list: $('#chipsCat').dataset.values || '',
+      category_list: $('#chipsCat').dataset.values||'',
       brand_mode: $('#brand_mode').value,
-      brand_list: $('#chipsBrand').dataset.values || '',
+      brand_list: $('#chipsBrand').dataset.values||'',
       background: $('#background').value,
       location: $('#location').value.trim(),
       objective: $('#objective').value,
@@ -396,47 +290,41 @@
       extra_budget_amount: $('#extra_budget_amount').value,
       total: $('#total').value,
       context_long: $('#context_long').value,
+      contact_name: $('#contact_name').value,
       created_by: 'web', updated_by: 'web'
     };
   }
-
-  let MODE = 'create'; // or 'update'
-  function setMode(m){ MODE=m; }
-
-  $('#btnSubmit').onclick = async ()=>{
-    const d = collectData();
+  let MODE='create';
+  $('#btnSubmit').onclick=async ()=>{
+    const d=collect();
     if(!d.memo_no){ alert('Memo No. is required'); return; }
     if(!d.date_of_issue||!d.start_date||!d.end_date){ alert('Date of Issue / Start / End is required'); return; }
-    if(new Date(d.end_date) < new Date(d.start_date)){ alert('End date must be >= Start date'); return; }
-
+    if(new Date(d.end_date)<new Date(d.start_date)){ alert('End date must be >= Start date'); return; }
     try{
-      const js = await apiPOST({action:'save', mode: MODE, data: d});
+      const js=await apiPOST({action:'save',mode:MODE,data:d});
       if(!js.ok) throw new Error(js.error||'save failed');
-      toast('Saved ✓'); setMode('update');
-      doSearch(); // refresh table if user just searched
+      toast('Saved ✓'); MODE='update'; doSearch();
     }catch(err){ alert(err.message); }
   };
 
-  /* ====== CLEAR ====== */
-  $('#btnClear').onclick = ()=>{
+  /* ========= CLEAR ========= */
+  $('#btnClear').onclick=()=>{
     document.querySelectorAll('input,textarea,select').forEach(el=>{
-      if(el.type==='checkbox') el.checked=false;
-      else el.value='';
+      if(el.type==='checkbox') el.checked=false; else el.value='';
     });
     $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values='';
     $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values='';
-    $('#days').textContent='0'; $('#extra_budget_amount').style.display='none'; $('#total').value='';
-    setMode('create');
+    $('#days').textContent='0'; $('#total').value=''; $('#extra_budget_amount').style.display='none';
+    MODE='create';
   };
 
-  /* ====== SEARCH ====== */
+  /* ========= SEARCH ========= */
   async function doSearch(){
-    $('#searchList').innerHTML = '<div class="muted">Loading…</div>';
-    const js = await apiGET({fn:'search', q: $('#q').value.trim()});
-    if(!js.ok){ $('#searchList').innerHTML = '<div class="muted">Error</div>'; return; }
-    const rows = js.data||[];
-    $('#countPill').textContent = rows.length + ' results';
-    $('#searchList').innerHTML = [
+    $('#searchList').innerHTML='<div class="muted">Loading…</div>';
+    const js=await apiGET({fn:'search',q:$('#q').value.trim()});
+    if(!js.ok){ $('#searchList').innerHTML='<div class="muted">Error</div>'; return; }
+    const rows=js.data||[]; $('#countPill').textContent=`${rows.length} results`;
+    $('#searchList').innerHTML=[
       '<table><thead><tr>',
       '<th>Memo No.</th><th>Event</th><th>Period</th><th>Calendar</th><th>Objective</th><th>Mechanic</th><th>Total</th><th></th>',
       '</tr></thead><tbody>',
@@ -453,50 +341,30 @@
       '</tbody></table>'
     ].join('');
   }
-  $('#doSearch').onclick = doSearch;
-  $('#btnSearch').onclick = ()=>{ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); doSearch(); };
+  $('#btnSearch').onclick=doSearch;
+  $('#btnJumpSearch').onclick=()=>{ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); doSearch(); };
 
-  window.openMemo = async (memo)=>{
-    const js = await apiGET({fn:'get', memo_no:memo});
-    if(!js.ok || !js.data){ alert('Not found'); return; }
-    const d = js.data;
-    // fill
-    $('#memo_no_top').value = d.memo_no||'';
-    $('#calendar_name_top').value = d.calendar_name||'';
-    $('#event_name_top').value = d.event_name||'';
-    $('#promotion_code').value = d.promotion_code||'';
-    $('#payment_code').value = d.payment_code||'';
-    $('#date_of_issue').value = d.date_of_issue||'';
-    $('#start_date').value = d.start_date||'';
-    $('#end_date').value = d.end_date||'';
-    $('#days').textContent = d.days||'0';
-    $('#campaign').value = d.campaign||'';
-    $('#target_group').value = d.target_group||'';
-    $('#category_mode').value = d.category_mode||'ALL';
-    $('#brand_mode').value = d.brand_mode||'ALL';
-    $('#background').value = d.background||'';
-    $('#location').value = d.location||'';
-    $('#objective').value = d.objective||'';
-    $('#target_text').value = d.target_text||'';
-    $('#mechanic_type').value = d.mechanic_type||'';
-    $('#in_budget').value = d.in_budget||'';
-    $('#chkExtra').checked = String(d.extra_budget_checked).toLowerCase()==='true';
-    $('#extra_budget_amount').value = d.extra_budget_amount||'';
-    $('#total').value = d.total||'';
-    $('#context_long').value = d.context_long||'';
+  window.openMemo=async (memo)=>{
+    const js=await apiGET({fn:'get',memo_no:memo}); if(!js.ok||!js.data){ alert('Not found'); return; }
+    const d=js.data;
+    $('#memo_no_top').value=d.memo_no||''; $('#calendar_name_top').value=d.calendar_name||''; $('#event_name_top').value=d.event_name||'';
+    $('#promotion_code').value=d.promotion_code||''; $('#payment_code').value=d.payment_code||'';
+    $('#date_of_issue').value=d.date_of_issue||''; $('#start_date').value=d.start_date||''; $('#end_date').value=d.end_date||''; $('#days').textContent=d.days||'0';
+    $('#campaign').value=d.campaign||''; $('#target_group').value=d.target_group||'';
+    $('#category_mode').value=d.category_mode||'ALL'; $('#brand_mode').value=d.brand_mode||'ALL';
+    $('#background').value=d.background||''; $('#location').value=d.location||'';
+    $('#objective').value=d.objective||''; $('#target_text').value=d.target_text||'';
+    $('#mechanic_type').value=d.mechanic_type||''; $('#in_budget').value=d.in_budget||''; $('#chkExtra').checked=String(d.extra_budget_checked).toLowerCase()==='true';
+    $('#extra_budget_amount').value=d.extra_budget_amount||''; $('#total').value=d.total||''; $('#context_long').value=d.context_long||''; $('#contact_name').value=d.contact_name||'';
 
-    // chips
-    const cat = split(d.category_list); $('#chipsCat').dataset.values = join(cat); $('#chipsCat').innerHTML = cat.map(x=>`<span class="chip">${x}</span>`).join('');
-    const br = split(d.brand_list); $('#chipsBrand').dataset.values = join(br); $('#chipsBrand').innerHTML = br.map(x=>`<span class="chip">${x}</span>`).join('');
+    const cat=split(d.category_list); $('#chipsCat').dataset.values=join(cat); $('#chipsCat').innerHTML=cat.map(x=>`<span class="chip">${x}</span>`).join('');
+    const br=split(d.brand_list); $('#chipsBrand').dataset.values=join(br); $('#chipsBrand').innerHTML=br.map(x=>`<span class="chip">${x}</span>`).join('');
 
-    updateModeButtons(); recalcTotal(); setMode('update');
-    window.scrollTo({top:0,behavior:'smooth'});
+    updateModeButtons(); recalcTotal(); MODE='update'; window.scrollTo({top:0,behavior:'smooth'});
   };
 
   /* init */
-  (async function(){
-    try{ await loadLookups(); }catch(e){ alert(e.message); }
-  })();
+  (async function(){ try{ await loadLookups(); }catch(e){ alert(e.message); } })();
 </script>
 </body>
 </html>
