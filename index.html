@@ -5,136 +5,87 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Promotion Portal</title>
 <style>
-  /* ===== Design System (Light) ===== */
   :root{
-    --bg:#f6f8fc;
-    --surface:#ffffff;
-    --border:#e2e8f0;
-    --subtle:#f1f5f9;
-    --ink:#0f172a;
-    --muted:#64748b;
-    --brand:#1d4ed8;
-    --brand-600:#2563eb;
-    --brand-50:#eff6ff;
-    --success:#0e7a4b;
-    --danger:#b91c1c;
-    --radius:12px;
+    --bg:#f6f8fc; --surface:#fff; --border:#e2e8f0; --subtle:#f1f5f9;
+    --ink:#0f172a; --muted:#64748b; --brand:#1d4ed8; --brand-600:#2563eb;
+    --brand-50:#eff6ff; --danger:#b91c1c; --radius:12px;
     --shadow:0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(15,23,42,.06);
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  }
-  a{color:var(--brand)}
-  /* ===== Layout ===== */
-  .page{
-    max-width:1200px; margin:28px auto; padding:0 20px;
-    display:grid; grid-template-columns: 7fr 5fr; gap:20px;
-  }
-  header.page-header{
-    grid-column:1 / -1; display:flex; align-items:end; justify-content:space-between; gap:16px;
-  }
-  .title h1{margin:0 0 4px; font-size:22px}
-  .title .sub{color:var(--muted); font-size:12px}
-  /* Cards */
-  .card{
-    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-    box-shadow:var(--shadow); overflow:hidden;
-  }
-  .card .hd{
-    padding:10px 14px; background:var(--brand); color:#fff; font-weight:700;
-  }
-  .card .bd{ padding:14px }
-  /* Right column stack */
-  .right{
-    display:grid; gap:20px; align-content:start;
-    position:sticky; top:20px; height:fit-content;
-  }
-
-  /* ===== Form Grid (Label | Field) ===== */
-  .rows{display:grid; gap:10px}
-  .row{
-    display:grid; grid-template-columns: 200px 1fr; gap:12px; align-items:center;
-  }
-  @media (max-width:860px){ .page{grid-template-columns:1fr} .row{grid-template-columns:150px 1fr} }
-  .label{
-    background:var(--subtle); border:1px solid var(--border); border-radius:10px;
-    padding:10px; font-weight:600; color:#334155;
-  }
-  .cell{display:flex; gap:10px; align-items:center}
-  .cell > *{ flex:1 1 100%; min-width:0 }
-
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial}
+  /* ===== page layout ===== */
+  .page{max-width:1240px;margin:28px auto;padding:0 20px;
+        display:grid;grid-template-columns:7fr 5fr;gap:20px}
+  @media (max-width:1024px){ .page{grid-template-columns:1fr} }
+  header{grid-column:1/-1;margin-bottom:4px}
+  header h1{margin:0 0 6px;font-size:22px}
+  header .sub{color:var(--muted);font-size:12px}
+  /* ===== card ===== */
+  .card{background:var(--surface);border:1px solid var(--border);
+        border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .card .hd{padding:10px 14px;background:var(--brand);color:#fff;font-weight:700}
+  .card .bd{padding:14px}
+  /* ===== right column (sticky) ===== */
+  .right{display:grid;gap:20px;align-content:start;position:sticky;top:20px;height:fit-content}
+  /* ===== rows: label | field ===== */
+  .rows{display:grid;gap:10px}
+  .row{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:center}
+  @media (max-width:720px){ .row{grid-template-columns:150px 1fr} }
+  .label{background:var(--subtle);border:1px solid var(--border);
+         border-radius:10px;padding:10px;font-weight:600;color:#334155}
+  .cell{display:flex;gap:10px;align-items:center}
+  .cell>*{flex:1 1 100%;min-width:0}
   input[type="text"],input[type="date"],input[type="number"],select,textarea{
-    width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px; outline:none; background:#fff;
+    width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none
   }
-  textarea{min-height:96px; resize:vertical}
-  input:focus,select:focus,textarea:focus{ border-color:var(--brand-600); box-shadow:0 0 0 3px rgba(37,99,235,.16) }
-
-  /* Inline grid for ranges */
-  .inline{ display:grid; grid-template-columns: 1fr auto 1fr auto; gap:10px; align-items:center }
-  .inline small{ color:var(--muted); white-space:nowrap }
-
-  /* Buttons */
-  .btn{ border:1px solid var(--border); background:#fff; color:var(--ink);
-        padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600 }
-  .btn:active{ transform:translateY(1px) }
-  .btn.primary{ background:var(--brand); color:#fff; border-color:var(--brand) }
-  .btn.ghost{ background:var(--subtle) }
-  .btn.danger{ background:#fee2e2; border-color:#fecaca; color:var(--danger) }
-  .btn.block{ width:100% }
-
-  /* Action Panel */
-  .actions .bd{ display:grid; gap:10px }
-  .actions .btn{ height:40px }
-
-  /* Chips */
-  .chips{ display:flex; flex-wrap:wrap; gap:6px }
-  .chip{ background:var(--brand-50); border:1px solid var(--border); padding:4px 8px; border-radius:999px; font-size:12px }
-
-  /* Search table */
-  table{ width:100%; border-collapse:separate; border-spacing:0; background:#fff; border:1px solid var(--border);
-         border-radius:12px; overflow:hidden; box-shadow:var(--shadow) }
-  thead th{ background:var(--subtle); color:#334155; font-weight:700 }
-  th,td{ padding:10px; border-bottom:1px solid var(--border); text-align:left }
-  tr:last-child td{ border-bottom:0 }
-  .toolbar{ display:flex; gap:10px; align-items:center; margin-bottom:10px }
-  .toolbar .grow{ flex:1 }
-
-  /* Modal */
-  .modal{ position:fixed; inset:0; background:rgba(15,23,42,.35); display:none; align-items:center; justify-content:center; padding:20px; z-index:50 }
-  .modal.show{ display:flex }
-  .modal .box{ max-width:680px; width:100%; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); padding:16px }
-  .modal .list{ max-height:360px; overflow:auto; border:1px solid var(--border); border-radius:10px; padding:8px }
-  .muted{ color:var(--muted); font-size:12px }
-
-  /* Mechanic details box height */
-  .mechanic-box{ height:380px }
-
-  /* Tiny toast */
-  .toast{ display:none; font-size:12px; background:#e7f7ea; color:#0f5132; border:1px solid #b3e2c1; padding:6px 10px; border-radius:10px }
-  .toast.show{ display:inline-block }
+  textarea{min-height:96px;resize:vertical}
+  input:focus,select:focus,textarea:focus{border-color:var(--brand-600);box-shadow:0 0 0 3px rgba(37,99,235,.16)}
+  /* period / inline */
+  .inline{display:grid;grid-template-columns:1fr auto 1fr auto;gap:10px;align-items:center}
+  .inline small{color:var(--muted);white-space:nowrap}
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:6px;min-height:26px}
+  .chip{background:var(--brand-50);border:1px solid var(--border);padding:4px 8px;border-radius:999px;font-size:12px}
+  .placeholder{color:var(--muted);font-size:12px}
+  /* buttons */
+  .btn{border:1px solid var(--border);background:#fff;color:var(--ink);
+       padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+  .btn.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .btn.block{width:100%}
+  .btn.ghost{background:var(--subtle)}
+  .actions .bd{display:grid;gap:10px}
+  /* mechanic details height */
+  .mechanic-box{height:360px}
+  /* search toolbar */
+  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+  .toolbar .grow{flex:1}
+  table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow)}
+  thead th{background:var(--subtle);color:#334155;font-weight:700}
+  th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}
+  tr:last-child td{border-bottom:0}
+  /* tiny toast */
+  .toast{display:none;font-size:12px;background:#e7f7ea;color:#0f5132;border:1px solid #b3e2c1;padding:6px 10px;border-radius:10px}
+  .toast.show{display:inline-block}
+  .muted{color:var(--muted);font-size:12px}
+  /* budget group as grid */
+  .budget-grid{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:center}
+  .budget-row{display:grid;grid-template-columns:200px 1fr 150px 1fr;gap:12px;align-items:center}
+  @media (max-width:900px){ .budget-row{grid-template-columns:200px 1fr} }
 </style>
 </head>
 <body>
   <div class="page">
-    <!-- Header -->
-    <header class="page-header">
-      <div class="title">
-        <h1>Promotion Portal</h1>
-        <div class="sub">GitHub Pages + Google Apps Script + Google Sheets</div>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center">
-        <div class="muted" id="msg"></div>
-      </div>
+    <header>
+      <h1>Promotion Portal</h1>
+      <div class="sub">GitHub Pages + Google Apps Script + Google Sheets</div>
     </header>
 
-    <!-- LEFT: Promotion Details -->
+    <!-- LEFT -->
     <section class="card">
       <div class="hd">Promotion Details</div>
-      <div class="bd rows" id="form">
-        <div class="row"><div class="label">Memo No.*</div><div class="cell"><input id="memo_no"/></div></div>
+      <div class="bd rows">
+        <div class="row"><div class="label">Memo No.*</div><div class="cell"><input id="memo_no" placeholder="Required"/></div></div>
         <div class="row"><div class="label">Calendar Name</div><div class="cell"><input id="calendar_name"/></div></div>
         <div class="row"><div class="label">Event Name</div><div class="cell"><input id="event_name"/></div></div>
 
@@ -146,7 +97,7 @@
           <div class="cell inline">
             <input type="date" id="date_of_issue"><small></small>
             <label class="muted" style="justify-self:end">Contact</label>
-            <input id="contact_name">
+            <input id="contact_name" placeholder="Contact name">
           </div>
         </div>
 
@@ -163,7 +114,7 @@
 
         <div class="row">
           <div class="label">Category</div>
-          <div class="cell" style="flex-direction:column; align-items:stretch; gap:8px">
+          <div class="cell" style="flex-direction:column;align-items:stretch;gap:8px">
             <div class="cell" style="gap:10px">
               <select id="category_mode" style="flex:0 0 260px">
                 <option value="ALL">All Category</option>
@@ -172,13 +123,13 @@
               </select>
               <button class="btn" id="pickCat" style="flex:0 0 180px">Select Categories</button>
             </div>
-            <div class="chips" id="chipsCat" data-values=""></div>
+            <div class="chips" id="chipsCat" data-values=""><span class="placeholder">No categories selected</span></div>
           </div>
         </div>
 
         <div class="row">
           <div class="label">Brand</div>
-          <div class="cell" style="flex-direction:column; align-items:stretch; gap:8px">
+          <div class="cell" style="flex-direction:column;align-items:stretch;gap:8px">
             <div class="cell" style="gap:10px">
               <select id="brand_mode" style="flex:0 0 260px">
                 <option value="ALL">All Brand</option>
@@ -187,20 +138,19 @@
               </select>
               <button class="btn" id="pickBrand" style="flex:0 0 180px">Select Brands</button>
             </div>
-            <div class="chips" id="chipsBrand" data-values=""></div>
+            <div class="chips" id="chipsBrand" data-values=""><span class="placeholder">No brands selected</span></div>
           </div>
         </div>
 
-        <div class="row"><div class="label">Background</div><div class="cell"><textarea id="background"></textarea></div></div>
+        <div class="row"><div class="label">Background</div><div class="cell"><textarea id="background" placeholder="Context / reasoning"></textarea></div></div>
         <div class="row"><div class="label">Location</div><div class="cell"><input id="location"/></div></div>
         <div class="row"><div class="label">Objectives</div><div class="cell"><select id="objective"></select></div></div>
         <div class="row"><div class="label">Target (text)</div><div class="cell"><input id="target_text"/></div></div>
       </div>
     </section>
 
-    <!-- RIGHT: Actions + Mechanic -->
+    <!-- RIGHT -->
     <aside class="right">
-      <!-- Actions (sticky) -->
       <section class="card actions">
         <div class="hd">Actions</div>
         <div class="bd">
@@ -211,49 +161,60 @@
         </div>
       </section>
 
-      <!-- Mechanic -->
       <section class="card">
         <div class="hd">Mechanic</div>
         <div class="bd rows">
           <div class="row"><div class="label">Mechanic</div><div class="cell"><select id="mechanic_type"></select></div></div>
-          <div class="row"><div class="label">Details</div><div class="cell"><textarea id="context_long" class="mechanic-box"></textarea></div></div>
-          <div class="row"><div class="label">In Budget</div><div class="cell"><input type="number" id="in_budget" min="0" step="0.01" placeholder="0.00"/></div></div>
+          <div class="row"><div class="label">Details</div><div class="cell"><textarea id="context_long" class="mechanic-box" placeholder="Describe mechanic / rules / exclusions"></textarea></div></div>
+
+          <!-- Budget group (inline + total) -->
           <div class="row">
-            <div class="label">Request Extra</div>
-            <div class="cell">
-              <input type="checkbox" id="chkExtra" style="flex:0 0 auto; width:auto">
-              <input type="number" id="extra_budget_amount" min="0" step="0.01" placeholder="0.00" style="display:none; max-width:200px">
+            <div class="label">Budget</div>
+            <div class="cell" style="display:block">
+              <div class="budget-row">
+                <div class="label" style="text-align:center">In Budget</div>
+                <input type="number" id="in_budget" min="0" step="0.01" placeholder="0.00"/>
+                <div class="label" style="text-align:center">Extra?</div>
+                <div class="cell" style="gap:8px">
+                  <input type="checkbox" id="chkExtra" style="flex:0 0 auto;width:auto">
+                  <input type="number" id="extra_budget_amount" min="0" step="0.01" placeholder="0.00" style="max-width:180px;display:none">
+                </div>
+              </div>
+              <div class="budget-grid" style="margin-top:10px">
+                <div class="label" style="text-align:center">Total</div>
+                <input id="total" readonly/>
+              </div>
             </div>
           </div>
-          <div class="row"><div class="label">Total</div><div class="cell"><input id="total" readonly/></div></div>
         </div>
       </section>
     </aside>
 
-    <!-- Search -->
-    <section class="card" style="grid-column:1 / -1">
+    <!-- SEARCH -->
+    <section class="card" style="grid-column:1/-1">
       <div class="hd">Search</div>
       <div class="bd">
         <div class="toolbar">
-          <input class="grow" id="q" placeholder="memo / event / promotion code / objective / mechanic"/>
+          <input id="q" class="grow" placeholder="memo / event / promotion code / objective / mechanic"/>
           <button class="btn" id="btnSearch">Search</button>
           <span class="muted" id="countPill">0 results</span>
+          <span class="muted" id="msg" style="margin-left:auto"></span>
         </div>
         <div id="searchList"></div>
       </div>
     </section>
   </div>
 
-  <!-- Modal: picker -->
-  <div class="modal" id="modal">
-    <div class="box">
+  <!-- Modal -->
+  <div id="modal" style="position:fixed;inset:0;background:rgba(15,23,42,.35);display:none;align-items:center;justify-content:center;padding:20px;z-index:50">
+    <div style="max-width:680px;width:100%;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:16px">
       <div style="display:flex;justify-content:space-between;align-items:center">
         <strong id="modalTitle">Select</strong>
-        <button class="btn danger" id="closeModal">Close</button>
+        <button class="btn ghost" id="closeModal">Close</button>
       </div>
-      <input id="modalFilter" placeholder="type to filter..." style="margin:12px 0; width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px"/>
-      <div class="list" id="modalList"></div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px">
+      <input id="modalFilter" placeholder="type to filter..." style="margin:12px 0;width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px"/>
+      <div id="modalList" style="max-height:360px;overflow:auto;border:1px solid var(--border);border-radius:10px;padding:8px"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
         <button class="btn primary" id="applyPick">Apply</button>
         <span class="muted" id="modalCount"></span>
       </div>
@@ -261,7 +222,7 @@
   </div>
 
 <script>
-  /* ========= API ========= */
+  /* ====== CONFIG & utils ====== */
   const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzodTKajuEeNkui75dL9x8zeUb15IF0F66ONFpbRJN0Ie4UqO_ly9iA-92tue_VWe_TtQ/exec';
   const $ = s => document.querySelector(s);
   const join = a => (a||[]).join('|');
@@ -271,7 +232,7 @@
   async function apiPOST(body){ const r=await fetch(WEB_APP_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(body)}); return r.json(); }
   const toast=t=>{ const el=$('#toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),1400); };
 
-  /* ========= Lookups ========= */
+  /* ====== LOOKUPS ====== */
   let LOOKUPS={categories:[],brands:[],objectives:[],mechanics:[]};
   async function loadLookups(){
     const js=await apiGET({fn:'lookups'}); if(!js.ok) throw new Error(js.error||'lookup error');
@@ -281,7 +242,7 @@
     updateModeButtons();
   }
 
-  /* ========= Category/Brand picker ========= */
+  /* ====== PICKERS ====== */
   let PICK={type:'category', set:new Set(), source:[]};
   function openPick(type){
     PICK.type=type;
@@ -289,43 +250,43 @@
     const cur=split((type==='category'?$('#chipsCat'):$('#chipsBrand')).dataset.values||'');
     PICK.set=new Set(cur);
     $('#modalTitle').textContent='Select '+(type==='category'?'Categories':'Brands');
-    $('#modalFilter').value=''; renderPick(); $('#modal').classList.add('show');
+    $('#modalFilter').value=''; renderPick(); $('#modal').style.display='flex';
   }
   function renderPick(){
     const q=$('#modalFilter').value.toLowerCase().trim();
     const items=PICK.source.filter(x=>!q||x.toLowerCase().includes(q));
     $('#modalList').innerHTML = items.map(n=>{
-      const checked=PICK.set.has(n)?'checked':'';
+      const checked=PICK.set.has(n)?'checked':''; 
       return `<label style="display:flex;gap:8px;align-items:center;padding:6px">
-        <input type="checkbox" ${checked} onchange="togglePick('${n.replace(/'/g,"\\'")}')"/><span>${n}</span></label>`
+        <input type="checkbox" ${checked} onchange="togglePick('${n.replace(/'/g,"\\'")}')"/><span>${n}</span></label>`;
     }).join('') || '<div class="muted">No items</div>';
     $('#modalCount').textContent=`${PICK.set.size} selected`;
   }
   window.togglePick=(n)=>{ if(PICK.set.has(n)) PICK.set.delete(n); else PICK.set.add(n); $('#modalCount').textContent=`${PICK.set.size} selected`; };
   $('#applyPick').onclick=()=>{
     const list=Array.from(PICK.set), html=list.map(x=>`<span class="chip">${x}</span>`).join('');
-    if(PICK.type==='category'){ $('#chipsCat').dataset.values=join(list); $('#chipsCat').innerHTML=html; }
-    else{ $('#chipsBrand').dataset.values=join(list); $('#chipsBrand').innerHTML=html; }
-    $('#modal').classList.remove('show');
+    if(PICK.type==='category'){ $('#chipsCat').dataset.values=join(list); $('#chipsCat').innerHTML=html||'<span class="placeholder">No categories selected</span>'; }
+    else{ $('#chipsBrand').dataset.values=join(list); $('#chipsBrand').innerHTML=html||'<span class="placeholder">No brands selected</span>'; }
+    $('#modal').style.display='none';
   };
-  $('#closeModal').onclick=()=>$('#modal').classList.remove('show');
+  $('#closeModal').onclick=()=>$('#modal').style.display='none';
   $('#modalFilter').addEventListener('input', renderPick);
   $('#pickCat').onclick=()=>openPick('category');
   $('#pickBrand').onclick=()=>openPick('brand');
 
   function updateModeButtons(){
-    const cm=$('#category_mode').value; $('#pickCat').disabled=(cm==='ALL'); if(cm==='ALL'){ $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values=''; }
-    const bm=$('#brand_mode').value; $('#pickBrand').disabled=(bm==='ALL'); if(bm==='ALL'){ $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values=''; }
+    const cm=$('#category_mode').value; $('#pickCat').disabled=(cm==='ALL'); if(cm==='ALL'){ $('#chipsCat').dataset.values=''; $('#chipsCat').innerHTML='<span class="placeholder">All categories</span>'; }
+    const bm=$('#brand_mode').value; $('#pickBrand').disabled=(bm==='ALL'); if(bm==='ALL'){ $('#chipsBrand').dataset.values=''; $('#chipsBrand').innerHTML='<span class="placeholder">All brands</span>'; }
   }
   $('#category_mode').addEventListener('change', updateModeButtons);
   $('#brand_mode').addEventListener('change', updateModeButtons);
 
-  /* ========= Derived fields ========= */
-  function recalcDays(){ $('#days').textContent = daysBetween($('#start_date').value,$('#end_date').value); }
+  /* ====== derive fields ====== */
+  function recalcDays(){ $('#days').textContent=daysBetween($('#start_date').value,$('#end_date').value); }
   function recalcTotal(){
     const base=parseFloat($('#in_budget').value||'0')||0;
     const exOn=$('#chkExtra').checked; $('#extra_budget_amount').style.display=exOn?'inline-block':'none';
-    const extra=exOn ? (parseFloat($('#extra_budget_amount').value||'0')||0) : 0;
+    const extra=exOn?(parseFloat($('#extra_budget_amount').value||'0')||0):0;
     $('#total').value=(base+extra).toFixed(2);
   }
   $('#start_date').addEventListener('change', recalcDays);
@@ -334,7 +295,7 @@
   $('#chkExtra').addEventListener('change', recalcTotal);
   $('#extra_budget_amount').addEventListener('input', recalcTotal);
 
-  /* ========= Save / Clear ========= */
+  /* ====== save / clear / search ====== */
   let MODE='create';
   function collect(){
     return {
@@ -350,9 +311,9 @@
       campaign: $('#campaign').value.trim(),
       target_group: $('#target_group').value.trim(),
       category_mode: $('#category_mode').value,
-      category_list: $('#chipsCat').dataset.values || '',
+      category_list: $('#chipsCat').dataset.values||'',
       brand_mode: $('#brand_mode').value,
-      brand_list: $('#chipsBrand').dataset.values || '',
+      brand_list: $('#chipsBrand').dataset.values||'',
       background: $('#background').value,
       location: $('#location').value.trim(),
       objective: $('#objective').value,
@@ -372,7 +333,7 @@
     const d=collect();
     if(!d.memo_no){ alert('Memo No. is required'); return; }
     if(!d.date_of_issue||!d.start_date||!d.end_date){ alert('Date of Issue / Start / End is required'); return; }
-    if(new Date(d.end_date)<new Date(d.start_date)){ alert('End date must be >= Start date'); return; }
+    if(new Date(d.end_date) < new Date(d.start_date)){ alert('End date must be >= Start date'); return; }
     $('#msg').textContent='Saving…';
     try{
       const js=await apiPOST({action:'save',mode:MODE,data:d});
@@ -385,16 +346,15 @@
     document.querySelectorAll('input,textarea,select').forEach(el=>{
       if(el.type==='checkbox') el.checked=false; else el.value='';
     });
-    $('#chipsCat').innerHTML=''; $('#chipsCat').dataset.values='';
-    $('#chipsBrand').innerHTML=''; $('#chipsBrand').dataset.values='';
+    $('#chipsCat').innerHTML='<span class="placeholder">No categories selected</span>'; $('#chipsCat').dataset.values='';
+    $('#chipsBrand').innerHTML='<span class="placeholder">No brands selected</span>'; $('#chipsBrand').dataset.values='';
     $('#days').textContent='0'; $('#total').value=''; $('#extra_budget_amount').style.display='none';
     MODE='create';
   };
 
-  /* ========= Search ========= */
   async function doSearch(){
     $('#searchList').innerHTML='<div class="muted">Loading…</div>';
-    const js=await apiGET({fn:'search', q: $('#q').value.trim()});
+    const js=await apiGET({fn:'search',q:$('#q').value.trim()});
     if(!js.ok){ $('#searchList').innerHTML='<div class="muted">Error</div>'; return; }
     const rows=js.data||[]; $('#countPill').textContent=`${rows.length} results`;
     $('#searchList').innerHTML=[
@@ -418,24 +378,26 @@
   $('#btnJumpSearch').onclick=()=>{ window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); doSearch(); };
 
   window.openMemo=async (memo)=>{
-    const js=await apiGET({fn:'get', memo_no:memo}); if(!js.ok||!js.data){ alert('Not found'); return; }
+    const js=await apiGET({fn:'get',memo_no:memo}); if(!js.ok||!js.data){ alert('Not found'); return; }
     const d=js.data;
-    ['memo_no','calendar_name','event_name','promotion_code','payment_code','date_of_issue','start_date','end_date',
-     'campaign','target_group','background','location','objective','target_text','mechanic_type','in_budget',
-     'extra_budget_amount','total','context_long','contact_name'
+    ['memo_no','calendar_name','event_name','promotion_code','payment_code','date_of_issue',
+     'start_date','end_date','campaign','target_group','background','location','objective',
+     'target_text','mechanic_type','in_budget','extra_budget_amount','total','context_long','contact_name'
     ].forEach(k=>{ const el=$('#'+k); if(el) el.value=d[k]||''; });
     $('#days').textContent=d.days||'0';
     $('#category_mode').value=d.category_mode||'ALL';
     $('#brand_mode').value=d.brand_mode||'ALL';
-    $('#chkExtra').checked = String(d.extra_budget_checked).toLowerCase()==='true';
+    $('#chkExtra').checked=String(d.extra_budget_checked).toLowerCase()==='true';
 
-    const cat=split(d.category_list); $('#chipsCat').dataset.values=join(cat); $('#chipsCat').innerHTML=cat.map(x=>`<span class="chip">${x}</span>`).join('');
-    const br=split(d.brand_list); $('#chipsBrand').dataset.values=join(br); $('#chipsBrand').innerHTML=br.map(x=>`<span class="chip">${x}</span>`).join('');
+    const cat=split(d.category_list); $('#chipsCat').dataset.values=join(cat);
+    $('#chipsCat').innerHTML=(cat.length?cat.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="placeholder">No categories selected</span>');
+
+    const br=split(d.brand_list); $('#chipsBrand').dataset.values=join(br);
+    $('#chipsBrand').innerHTML=(br.length?br.map(x=>`<span class="chip">${x}</span>`).join(''):'<span class="placeholder">No brands selected</span>');
 
     updateModeButtons(); recalcTotal(); MODE='update'; window.scrollTo({top:0,behavior:'smooth'});
   };
 
-  /* Init */
   (async function(){ try{ await loadLookups(); }catch(e){ alert(e.message); } })();
 </script>
 </body>
