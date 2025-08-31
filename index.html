@@ -149,7 +149,7 @@
     try{
       const res = await fetch(WEB_APP_URL, {
         method: 'POST',
-        headers: {'Content-Type':'application/json'},
+        headers: {'Content-Type':'text/plain;charset=UTF-8'},   // << แก้จุดที่ 1
         body: JSON.stringify({ action:'update', rowIndexOneBased, data: { status: newStatus } })
       });
       const json = await res.json();
@@ -169,7 +169,7 @@
     try{
       const res = await fetch(WEB_APP_URL, {
         method: 'POST',
-        headers: {'Content-Type':'application/json'},
+        headers: {'Content-Type':'text/plain;charset=UTF-8'},   // << แก้จุดที่ 2
         body: JSON.stringify({ action: 'add', data })
       });
       const json = await res.json();
